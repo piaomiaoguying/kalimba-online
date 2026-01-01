@@ -43,6 +43,38 @@ $(document).ready(function () {
         }
     });
 
+    // 保存上一次的屏幕方向
+    let lastOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+
+    // 监听屏幕方向变化事件
+    $(window).on("orientationchange", function() {
+        handleOrientationChange();
+    });
+
+    // 监听窗口大小变化事件（作为备用方案）
+    $(window).on("resize", function() {
+        handleOrientationChange();
+    });
+
+    // 处理屏幕方向变化
+    function handleOrientationChange() {
+        // 只在全屏状态下处理
+        if (!document.fullscreenElement && !$("#main-container").hasClass("fullscreen")) {
+            return;
+        }
+
+        const currentOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+
+        // 如果从竖屏变为横屏，刷新页面
+        if (lastOrientation === 'portrait' && currentOrientation === 'landscape') {
+            console.log("检测到横屏变化，刷新页面");
+            location.reload();
+        }
+
+        // 更新上一次的屏幕方向
+        lastOrientation = currentOrientation;
+    }
+
     // 检测是否是iOS设备
     function isIOS() {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
