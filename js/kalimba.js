@@ -235,6 +235,7 @@ class Kalimba_Online {
     // get tunes() { return loadJSONFromLocalStorage("tunes", Array(21).fill(0)); } // При переходе на формат json не читаются старые настройки
     get keyboardScheme () { return loadFromLocalStorage("keyboardScheme", 0); }
     get currentKeyboardScheme () { return keyboardSchemes[this.keyboardScheme]; }
+    get fullscreenLayout() { return loadFromLocalStorage("fullscreenLayout", "default"); }
     get volume() { return loadFromLocalStorage("volume", 75); }
     get recordedNotes() { return loadJSONFromLocalStorage("recordedNotes", Array(0)); }
 
@@ -247,6 +248,7 @@ class Kalimba_Online {
     set tunes(value) { saveToLocalStorage("tunes", value); }
     // set tunes(value) { saveJSONToLocalStorage("tunes", value); }
     set keyboardScheme(value) { saveToLocalStorage("keyboardScheme", value); }
+    set fullscreenLayout(value) { saveToLocalStorage("fullscreenLayout", value); }
     set volume(value) { saveToLocalStorage("volume", value); }
     set recordedNotes(value) { saveJSONToLocalStorage("recordedNotes", value); }
 
@@ -888,6 +890,14 @@ $(document).ready(function () {
 
             updateLabels();
 
+        });
+
+        // 在页面上显示全屏布局 Fullscreen Layout（从 localStorage）
+        $('input[name="fullscreenLayout"][value="' + kalimba_online.fullscreenLayout + '"]').prop('checked', true);
+
+        // 全屏布局单选按钮更改事件
+        $('input', '#fullscreen-layout-radio-list').on("click", function () {
+            kalimba_online.fullscreenLayout = $('input:checked', '#fullscreen-layout-radio-list').val();
         });
 
     

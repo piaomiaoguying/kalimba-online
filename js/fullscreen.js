@@ -118,6 +118,13 @@ $(document).ready(function () {
     
     // 手机横屏时调整按键位置：左边4个键往左移，右边5个键往右移
     function adjustKeyPositionsForMobile() {
+        // 检查是否选择了左右布局
+        const layout = kalimba_online.fullscreenLayout;
+        if (layout !== 'left-right') {
+            console.log("当前布局设置:", layout, "不调整按键位置");
+            return;
+        }
+        
         const keys = $(".key-zone");
         const totalKeys = keys.length;
         const viewportWidth = window.innerWidth;
