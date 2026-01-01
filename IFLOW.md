@@ -570,3 +570,223 @@ docker-compose up -d
 ### 更多信息
 
 详细的部署说明、配置选项和高级用法请参考 `DOCKER_DEPLOY.md` 文件。
+
+---
+
+## 更新日志
+
+### 2026-01-01 - 手机端优化和UI改进
+
+#### 手机横屏全屏布局优化
+
+**问题**：手机横屏全屏时，琴键居中布局，大拇指够着比较吃力。
+
+**解决方案**：
+1. 添加了全屏布局设置选项，用户可以选择"默认"或"左右"布局
+2. 在"左右"布局模式下，左边4个键往左移，右边5个键往右移，方便左右大拇指演奏
+3. 在手机端全屏时隐藏了全屏缩小按钮，用户可以使用手机返回手势退出全屏
+
+**修改文件**：
+- `index.html` - 添加全屏布局设置选项的HTML结构，为选项添加 `data-i18n` 属性
+- `js/kalimba.js` - 添加 `fullscreenLayout` 属性（getter/setter），添加初始化和事件处理代码
+- `js/fullscreen.js` - 实现 `adjustKeyPositionsForMobile()` 函数，根据设置调整按键位置，添加 `originalTransforms` 数组保存原始transform值
+- `css/kalimba.css` - 在手机端全屏时隐藏按钮容器（`display: none !important`）
+
+**技术细节**：
+- 使用 `transform: translateX()` 移动按键，不影响按键之间的间距
+- 移动距离为视口宽度的20%，可根据需要调整
+- 设置保存在 localStorage 中，下次访问时记住用户选择
+- 只有当用户选择"左右"布局时才会调整按键位置
+
+#### UI调整
+
+**修改内容**：
+1. **页面标题**：从 "Kalimba Online" 改为 "手机拇指琴"
+2. **页面描述**：改为 "您可以在手机端浏览器中轻松演奏卡林巴拇指琴"
+3. **SEO描述**：meta标签的description也改为中文
+4. **隐藏按键数量控制滑块**：因为用户只需要9键，隐藏不必要的选项（注释掉 `<fieldset class="option-keys">`）
+5. **隐藏按钮容器**：在手机端全屏时隐藏所有按钮，腾出更多空间给琴键
+
+**修改文件**：
+- `index.html` - 修改标题和描述（包括 `<title>`、`<h1>`、`<p>` 和 `<meta name="description">`），注释掉按键数量滑块
+- `lang/zh-CN.json` - 更新中文翻译
+- `lang/en.json` - 更新英文翻译为 "Mobile Thumb Piano"
+- `lang/ar.json` - 更新阿拉伯语翻译
+- `lang/de.json` - 更新德语翻译
+- `lang/es.json` - 更新西班牙语翻译
+- `lang/fr.json` - 更新法语翻译
+- `lang/id.json` - 更新印尼语翻译
+- `lang/ja.json` - 更新日语翻译
+- `lang/pt.json` - 更新葡萄牙语翻译
+- `lang/ru.json` - 更新俄语翻译
+
+#### 默认设置调整
+
+**修改内容**：
+1. **基本音默认值**：从 C4 改为 E4（`allNotesSharp.indexOf("E4")`）
+2. **按键数量默认值**：从 17 改为 9
+
+**修改文件**：
+- `js/kalimba.js` - 修改 `baseNote` 和 `keysCount` 的getter中的默认值
+
+#### 本地化完善
+
+**问题**：新增的全屏布局设置和修改的标题描述没有走本地化系统。
+
+**解决方案**：
+1. 为全屏布局选项添加 `data-i18n` 属性（`option.fullscreenLayout`、`option.defaultLayout`、`option.leftRightLayout`）
+2. 在所有语言文件中添加对应的翻译
+3. 确保切换语言时，所有文案都能正确显示
+
+**修改文件**：
+- `index.html` - 为全屏布局选项的 `<legend>` 和 `<span>` 元素添加 `data-i18n` 属性
+- 所有 `lang/*.json` 文件（10个） - 添加以下翻译键：
+  - `option.fullscreenLayout` - "全屏布局: " / "Fullscreen Layout: " 等
+  - `option.defaultLayout` - "默认" / "Default" 等
+  - `option.leftRightLayout` - "左右" / "Left-Right" 等
+
+**技术细节**：
+- 使用 `data-i18n` 属性标记需要翻译的元素
+- `lang.js` 会自动加载对应语言文件并替换文本
+- 如果某个键在当前语言文件中不存在，会回退到英语（默认语言）
+- 所有语言的title和description都已更新为各自语言的原文
+
+#### 手机横屏按键高度调整
+
+**问题**：手机横屏全屏时，按键高度增加不够，看起来比较短。
+
+**解决方案**：
+- 在手机横屏模式下，按键高度增加量从 1/4 屏幕高度乘以 3.5
+- 这样按键会更长，更适合横屏演奏
+
+**修改文件**：
+- `js/fullscreen.js` - 调整 `increaseKeyHeights()` 函数中的高度计算逻辑：
+  ```javascript
+  if (isMobileLandscape) {
+      vhQuarter = vhQuarter * 3.5;
+  }
+  ```
+
+#### 下方点样式优化
+
+**问题**：琴键上带点的音符（如 5̣ 6̣ 7̣），下方的点离数字有点远。
+
+**解决方案**：
+- 减小 `gap` 从 2px 到 0.5px
+- 保留 `margin-top: -2px` 让点更靠近数字
+
+**修改文件**：
+- `css/kalimba.css` - 调整 `.note-number.dots-below` 和 `.note-number.dots-below::after` 的样式：
+  ```css
+  .note-number.dots-below {
+      gap: 0.5px;
+  }
+  .note-number.dots-below::after {
+      margin-top: -2px;
+  }
+  ```
+
+#### 自定义9键标签
+
+**问题**：用户购买的9键卡林巴琴的音符顺序是：531（不带点）- 657（带点）- 246（不带点），与默认布局不同。
+
+**解决方案**：
+- 添加了自定义9键标签映射 `customLabels` 数组
+- 修复了类型比较问题（使用 `parseInt(this.keysCount) === 9` 而不是 `=== "9"`）
+- 修复了双点显示问题（下方点不添加到label字符串中，只通过CSS的 `::after` 显示）
+
+**修改文件**：
+- `js/kalimba.js` - 在 `addKeys()` 方法中添加自定义标签映射：
+  ```javascript
+  const customLabels = [
+      {num: 5, dots: "", dotsPosition: ""},           // 位置1: 5（无点）
+      {num: 3, dots: "", dotsPosition: ""},           // 位置2: 3（无点）
+      {num: 1, dots: "", dotsPosition: ""},           // 位置3: 1（无点）
+      {num: 6, dots: "·", dotsPosition: "below"},     // 位置4: 6̣（带点，低八度）
+      {num: 5, dots: "·", dotsPosition: "below"},     // 位置5: 5̣（带点，低八度）
+      {num: 7, dots: "·", dotsPosition: "below"},     // 位置6: 7̣（带点，低八度）
+      {num: 2, dots: "", dotsPosition: ""},           // 位置7: 2（无点）
+      {num: 4, dots: "", dotsPosition: ""},           // 位置8: 4（无点）
+      {num: 6, dots: "", dotsPosition: ""}            // 位置9: 6（无点）
+  ];
+  ```
+
+**技术细节**：
+- 自定义标签只在按键数量为9时生效
+- 使用 `parseInt()` 确保类型比较正确
+- 下方点通过CSS的 `::after` 伪元素显示，避免重复显示
+
+#### 已知问题
+
+无新增已知问题。
+
+#### 后续优化建议
+
+1. 可以考虑添加更多全屏布局选项（如左对齐、右对齐、自定义间距）
+2. 可以考虑让用户自定义移动距离（通过滑块设置百分比）
+3. 可以考虑添加更多按键数量的自定义标签（如17键、15键等）
+4. 可以考虑添加触觉反馈，提升演奏体验
+
+---
+
+## 附录
+
+### 项目文件结构
+
+```
+kalimba-online/
+├── index.html                 # 主页面
+├── manifest.json              # PWA 清单文件
+├── service-worker.js          # Service Worker
+├── Dockerfile                 # Docker 镜像构建文件
+├── docker-compose.yml         # Docker Compose 配置
+├── nginx.conf                 # Nginx 配置
+├── update.sh                  # 部署脚本
+├── css/
+│   ├── kalimba.css           # 卡林巴样式
+│   ├── pico-color-picker.css # 颜色选择器样式
+│   └── pico-theme-switcher.css # 主题切换样式
+├── js/
+│   ├── kalimba.js            # 核心逻辑
+│   ├── lang.js               # 多语言支持
+│   ├── fullscreen.js         # 全屏功能
+│   ├── pico-color-picker.js  # 颜色选择器
+│   └── pico-theme-switcher.js # 主题切换器
+├── lang/                     # 多语言文件
+│   ├── zh-CN.json            # 中文（简体）
+│   ├── en.json               # 英语
+│   ├── ar.json               # 阿拉伯语
+│   ├── de.json               # 德语
+│   ├── es.json               # 西班牙语
+│   ├── fr.json               # 法语
+│   ├── id.json               # 印尼语
+│   ├── ja.json               # 日语
+│   ├── pt.json               # 葡萄牙语
+│   └── ru.json               # 俄语
+├── lib/                      # 第三方库
+│   ├── jquery.min.js         # jQuery 3.7.1
+│   ├── soundfont-player.min.js # SoundFontPlayer 0.12.0
+│   └── pico.min.css          # Pico.css 1.5.13
+└── soundfonts/               # 音色库
+    ├── FluidR3_GM/
+    │   └── kalimba-mp3.js    # 1.6 MB
+    ├── FatBoy/
+    │   └── kalimba-mp3.js    # 1.6 MB
+    └── keylimba/
+        └── kalimba.mp3.js    # 已存在
+```
+
+### 相关文档
+
+- `README.md` - 项目说明
+- `DOCKER_DEPLOY.md` - Docker 部署详细文档
+- `LICENSE` - 许可证文件
+
+### 贡献者
+
+- Artem Samsonov - 原始作者
+- 贡献者列表详见 GitHub 仓库
+
+### 许可证
+
+项目使用开源许可证，详见 `LICENSE` 文件。
