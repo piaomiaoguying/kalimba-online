@@ -377,7 +377,71 @@ input[type=range]::-webkit-slider-thumb {
     height: -webkit-fill-available;
     margin: 0;
     margin-bottom: var(--spacing);
-    padding: 3vh;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* 全屏模式下卡林巴容器 */
+.fullscreen .kalimba-container {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 1vh;
+    width: 100%;
+    /* 整体放大容器，保持所有按键的比例 */
+    transform: scale(2);
+    transform-origin: center top;
+    /* 确保容器不会超出屏幕 */
+    max-width: 100vw;
+}
+
+/* 全屏模式下按键区域 - 调整宽度 */
+.fullscreen .key-zone {
+    width: 6vw !important;
+    max-width: 90px;
+    min-width: 50px;
+    padding: 0.5vw !important;
+    /* 不设置固定高度，让 JavaScript 计算的比例生效 */
+}
+
+/* 全屏模式下按键 - 不设置高度，让 JavaScript 计算的比例生效 */
+.fullscreen .key {
+    height: auto !important;
+}
+
+/* 全屏模式下文字大小自适应 */
+.fullscreen .note-text {
+    font-size: 3vw;
+    padding-bottom: 2vh;
+    margin-bottom: 4vh;
+}
+
+.fullscreen .note-keyboard-key {
+    font-size: 2vw;
+}
+
+.fullscreen .note-number {
+    font-size: 2.5vw;
+}
+
+.fullscreen .note-letter {
+    font-size: 2.2vw;
+}
+
+/* 全屏模式下按钮容器 */
+.fullscreen .buttons-container {
+    height: auto;
+    padding: 2vh 0;
+}
+
+.fullscreen .buttons-container .button {
+    width: 6vw;
+    height: 6vw;
+    min-width: 50px;
+    min-height: 50px;
+    max-width: 80px;
+    max-height: 80px;
 }
 
 /* ** ** ** ** ** ** ** ** ** ** ** */
