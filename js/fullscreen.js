@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    // Кнопка переключения Фуллскрина
+    // 全屏切换按钮
     const fullscreenButton = $("#fullscreenButton");
-    // Блок, который необходимо делать в фулл скрин
+    // 需要设置为全屏的块
     const mainContainer = $("#main-container")[0];
 
-    // Событие на нажатие на кнопку Фуллскрина
+    // 点击全屏按钮的事件
     fullscreenButton.on("click", function () {
         if (document.fullscreenElement) {
             exitFullscreen();
@@ -13,9 +13,9 @@ $(document).ready(function () {
         }
     });
 
-    // Событие вызывается при смене состояния фуллскрина
+    // 全屏状态更改时调用的事件
     $(document).on("fullscreenchange", function () {
-        // Если полный экран выключен, выходим из него
+        // 如果全屏关闭，则退出
         if (!document.fullscreenElement) {
             $("#fullscreen-on").show();
             $("#fullscreen-off").hide();
@@ -23,7 +23,7 @@ $(document).ready(function () {
         }
     });
 
-    // Функция входа в полный экран
+    // 进入全屏的函数
     function enterFullscreen() {
         if (mainContainer.requestFullscreen) {
             mainContainer.requestFullscreen();
@@ -39,7 +39,7 @@ $(document).ready(function () {
         $("#main-container").addClass("fullscreen");
     }
 
-    // Функция выхода из полного экрана
+    // 退出全屏的函数
     function exitFullscreen() {
         if (document.exitFullscreen) {
             document.exitFullscreen();

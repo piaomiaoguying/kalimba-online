@@ -1,7 +1,7 @@
 const CACHE_NAME = 'kalimba-game-cache-v1';
-// Таймаут ожидания загрузки в миллисекундах
+// 加载超时时间（毫秒）
 const CACHE_TIMEOUT = 400;
-// Список URL-адресов для кэширования
+// 要缓存的 URL 列表
 const urlsToCache = [
     './css/kalimba.css',
     './css/pico-color-picker.css',
@@ -40,7 +40,7 @@ const urlsToCache = [
     'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/kalimba-mp3.js',
 ];
 
-// Инициализация кэша при установке service-worker
+// 安装 service-worker 时初始化缓存
 const initCache = () => {
     return caches.open(CACHE_NAME).then((cache) => {
         return cache.addAll(urlsToCache);
@@ -49,7 +49,7 @@ const initCache = () => {
     });
 };
 
-// Попытка получить данные по сети с установленным таймаутом
+// 尝试通过网络获取数据，并设置超时
 const tryNetwork = (req, timeout) => {
     // console.log(req)
     return new Promise((resolve, reject) => {
@@ -61,14 +61,14 @@ const tryNetwork = (req, timeout) => {
                 cache.put(req, responseClone)
             })
             resolve(res);
-            // Отклонить промис, если запрос в сеть завершается ошибкой.
+            // 如果网络请求失败，则拒绝 Promise。
         }, reject);
     });
 };
 
-// Получение данных из кэша при отсутствии сети
+// 在没有网络时从缓存获取数据
 const getFromCache = (req) => {
-    console.log('[Service-worker] Не удалось загрузить данные из интернета, получаем данные из кэша...');
+    console.log('[Service-worker] 无法从互联网加载数据，从缓存获取数据...');
     console.log(req.url);
     return caches.open(CACHE_NAME).then((cache) => {
         return cache.match(req).then((result) => {
@@ -77,15 +77,15 @@ const getFromCache = (req) => {
     });
 };
 
-// Событие установки service-worker
+// service-worker 安装事件
 self.addEventListener("install", (e) => {
-    console.log("[Service-worker] Установлен");
+    console.log("[Service-worker] 已安装");
     e.waitUntil(initCache());
 });
 
-// Событие активации service-worker
+// service-worker 激活事件
 self.addEventListener('activate', (e) => {
-    console.log("[Service-worker] Активирован");
+    console.log("[Service-worker] 已激活");
     e.waitUntil(
         caches.keys().then((keyList) => {
             return Promise.all(keyList.map((key) => {
@@ -97,9 +97,9 @@ self.addEventListener('activate', (e) => {
     );
 });
 
-// Событие получения запроса
+// 获取请求事件
 self.addEventListener("fetch", (e) => {
-    // console.log("[Service-worker] Попытка получить данные из сети или из кэша: " + e.request.url);
-    // Попытаться получить данные из сети, и если не удается, вернуть закэшированную копию.
+    // console.log("[Service-worker] 尝试从网络或缓存获取数据: " + e.request.url);
+    // 尝试从网络获取数据，如果失败则返回缓存的副本。
     e.respondWith(tryNetwork(e.request, CACHE_TIMEOUT).catch(() => getFromCache(e.request)));
 });

@@ -1,15 +1,15 @@
 
-// saveToLocalStorage сохранянет значение value в localStorage под ключом key
+// saveToLocalStorage 将 value 值保存到 localStorage 的 key 键下
 function saveToLocalStorage(key, value) {
     window.localStorage && window.localStorage.setItem(key, value);
 }
 
-// loadFromLocalStorage возвращает значение ключа key из localStorage, если его нет, возращает default_value
+// loadFromLocalStorage 从 localStorage 返回键 key 的值，如果不存在则返回 default_value
 function loadFromLocalStorage(key, default_value) {
     return window.localStorage && null !== window.localStorage.getItem(key) ? window.localStorage.getItem(key) : default_value;
 }
 
-// saveJSONToLocalStorage записывает в localStorage объект value под ключом key в формате JSON
+// saveJSONToLocalStorage 将对象 value 以 JSON 格式写入 localStorage 的 key 键下
 function saveJSONToLocalStorage(key, value) {
     if (window.localStorage) {
         try {
@@ -21,7 +21,7 @@ function saveJSONToLocalStorage(key, value) {
     }
 }
 
-// loadJSONFromLocalStorage возвращает значение ключа key из localStorage в формате JSON, если его нет, возвращает default_value
+// loadJSONFromLocalStorage 从 localStorage 返回键 key 的 JSON 格式值，如果不存在则返回 default_value
 function loadJSONFromLocalStorage(key, default_value) {
     if (window.localStorage) {
         const serializedValue = window.localStorage.getItem(key);
@@ -38,7 +38,7 @@ function loadJSONFromLocalStorage(key, default_value) {
 }
 
 // // // // // //
-//  КОНСТАНТЫ  //
+//  常量  //
 // // // // // //
 
 const Soundfonts = {
@@ -59,7 +59,7 @@ const Soundfonts = {
     },
 };
 
-// Сортирует входящий массив клавиш и выводит их в порядке Калимбы
+// 对输入的键数组进行排序，并按 Kalimba 顺序输出
 function sortArrayKalimba(notesArr) {
     let sortedArr = []
     for (let i = notesArr.length - notesArr.length % 2 - 1; i > 0; i -= 2) {
@@ -82,52 +82,59 @@ const allNotesSharp = [                                       "A0", "A#0", "B0",
     "C8"
 ];
 
-// Объект с клавишами, где ключ - это keycode, а значение - название клавиши
+// 键盘按键对象，其中键是 keycode，值是按键名称
+
 const keyboardKeys = {
+
     192: "`", 49: "1", 50: "2", 51: "3", 52: "4", 53: "5", 54: "6", 55: "7", 56: "8", 57: "9", 48: "0", 189: "-", 187: "=", 8: "←",
+
     9: "Tab", 81: "Q", 87: "W", 69: "E", 82: "R", 84: "T", 89: "Y", 85: "U", 73: "I", 79: "O", 80: "P", 219: "[", 221: "]", 220: "\\",
+
     20: "Caps", 65: "A", 83: "S", 68: "D", 70: "F", 71: "G", 72: "H", 74: "J", 75: "K", 76: "L", 186: ";", 222: "'", 13: "Enter",
+
     16: "Shift", 90: "Z", 88: "X", 67: "C", 86: "V", 66: "B", 78: "N", 77: "M", 188: ",", 190: ".", 191: "/",
-    17: "Ctrl", 18: "Alt", 32: "Space", 0: " "
+
+    17: "Ctrl", 18: "Alt", 32: "Space", 0: " "
+
 };
 
-// Массив с клавишами обычной QWERTY раскладки, содержит информацию о положении кнопки и её длине 
+// 普通 QWERTY 布局的键盘按键数组，包含按钮的位置和长度信息
 const keyboardKeyInfo = [
-    // Ряд 1
+    // 第 1 行
     [
         { code: 192, length: 1 }, { code: 49, length: 1 }, { code: 50, length: 1 }, { code: 51, length: 1 },
         { code: 52, length: 1 }, { code: 53, length: 1 }, { code: 54, length: 1 }, { code: 55, length: 1 },
         { code: 56, length: 1 }, { code: 57, length: 1 }, { code: 48, length: 1 }, { code: 189, length: 1 },
         { code: 187, length: 1 }, { code: 8, length: 2.5 }
     ],
-    // Ряд 2
+    // 第 2 行
     [
         { code: 9, length: 1.5 }, { code: 81, length: 1 }, { code: 87, length: 1 }, { code: 69, length: 1 },
         { code: 82, length: 1 }, { code: 84, length: 1 }, { code: 89, length: 1 }, { code: 85, length: 1 },
         { code: 73, length: 1 }, { code: 79, length: 1 }, { code: 80, length: 1 }, { code: 219, length: 1 },
         { code: 221, length: 1 }, { code: 220, length: 2 }
     ],
-    // Ряд 3
+    // 第 3 行
     [
         { code: 20, length: 2 }, { code: 65, length: 1 }, { code: 83, length: 1 }, { code: 68, length: 1 },
         { code: 70, length: 1 }, { code: 71, length: 1 }, { code: 72, length: 1 }, { code: 74, length: 1 },
         { code: 75, length: 1 }, { code: 76, length: 1 }, { code: 186, length: 1 }, { code: 222, length: 1.05 },
         { code: 13, length: 2.5 }
     ],
-    // Ряд 4
+    // 第 4 行
     [
         { code: 16, length: 2.5 }, { code: 90, length: 1 }, { code: 88, length: 1 }, { code: 67, length: 1 },
         { code: 86, length: 1 }, { code: 66, length: 1 }, { code: 78, length: 1 }, { code: 77, length: 1 },
         { code: 188, length: 1 }, { code: 190, length: 1 }, { code: 191, length: 1 }, { code: 16, length: 3.1 }
     ],
-    // Ряд 5
+    // 第 5 行
     [
         { code: 17, length: 1.5 }, { code: 0, length: 1 }, { code: 18, length: 1.5 }, { code: 32, length: 6.3 },
         { code: 18, length: 1.5 }, { code: 0, length: 1 }, { code: 0, length: 1 }, { code: 17, length: 2 }
     ]
 ];
 
-// Схемы управления клавиатурой, каждый массив - отдельная схема, в которой хранятся keycode клавиш в порядке возрастания частоты ноты
+// 键盘控制方案，每个数组是一个独立的方案，存储按键的 keycode，按音符频率升序排列
 const keyboardSchemes = [
     // B V N C M X < F H D J S K A U R I E O P W
     [66, 86, 78, 67, 77, 88, 188, 70, 72, 68, 74, 83, 75, 65, 85, 82, 73, 69, 79, 80, 87],
@@ -139,49 +146,49 @@ const keyboardSchemes = [
     [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187],
 ];
 
-// Флаг, нажата ли ЛКМ
+// 标记，是否按下鼠标左键
 var isMouseDown = false;
 
-// Флаг, нажат ли пробел (используется для повышения октавы при игре на клавиатуре)
+// 标记，是否按下空格键（用于在键盘演奏时提高八度）
 var isSpacePressed = false;
 
-// Флаг, ведётся ли запись
+// 标记，是否正在录制
 var isRecording = false;
 
-// Флаг, воспроизводится ли запись
+// 标记，是否正在播放录制
 var isPlaying = false;
 
-// Переменная для сохранения записи
+// 用于保存录制的变量
 var sequence = [];
 
-// Переменная для хранения времени последней нажатой клавиши
+// 用于存储最后一次按键时间的变量
 var prevTime;
 
-// Выключаем флаг isMouseDown когда отжата ЛКМ
+// 当释放鼠标左键时关闭 isMouseDown 标记
 $(document).on('mouseup', (event) => {
-    // Проверка, что отпущена левая кнопка мыши (код 0)
+    // 检查是否释放了鼠标左键（代码 0）
     if (event.button === 0) {
         isMouseDown = false;
     }
 });
 
-// Включаем флаг isMouseDown когда нажата ЛКМ
+// 当按下鼠标左键时打开 isMouseDown 标记
 $(document).on('mousedown', (event) => {
-    // Проверка, что нажата левая кнопка мыши (код 0)
+    // 检查是否按下了鼠标左键（代码 0）
     if (event.button === 0) {
         isMouseDown = true;
     }
 });
 
-// Включаем флаг isSpacePressed когда нажат Пробел
+// 当按下空格键时打开 isSpacePressed 标记
 $(document).on('keydown', function (event) {
     if (event.keyCode == 32) {
         isSpacePressed = true;
-        event.preventDefault(); // Отменяем прокрутку при нажатии на пробел
+        event.preventDefault(); // 取消按下空格键时的滚动
     }
 });
 
-// Выключаем флаг isSpacePressed когда отжат Пробел
+// 当释放空格键时关闭 isSpacePressed 标记
 $(document).on('keyup', function (event) {
     if (event.keyCode == 32) {
         isSpacePressed = false;
@@ -189,7 +196,7 @@ $(document).on('keyup', function (event) {
 });
 
 
-// Обновляет метки на клавишах
+// 更新按键上的标签
 function updateLabels() {
     switch (kalimba_online.labelType) {
         case "Number":
@@ -211,7 +218,7 @@ function updateLabels() {
 
 
 // // // // // // //
-//  ГЛАВНЫЙ КЛАСС //
+//  主类  //
 // // // // // // //
 
 class Kalimba_Online {
@@ -248,65 +255,65 @@ class Kalimba_Online {
         this.loadSF();
     }
 
-    // Маркер, определяющий тачскрин
+    // 标记，确定是否为触摸屏
     ifTouchscreen = false;
-    
-    // Перменная буфер, хранящая последнюю нажатую тачпадом клавишу
+
+    // 缓冲变量，存储最后一次触摸板按下的按键
     lastTouchKeysPressed=[];
-    
-    // Загружаем звуки калимбы
+
+    // 加载 Kalimba 音频
     _audioContext = new (window.AudioContext || window.webkitAudioContext)();
     
-    // Загружает звуки
+    // 加载音频
     loadSF() {
         var KalimbaSF = Soundfont.instrument(this._audioContext, this.currentSoundfont.url);
 
-        // Чистим поле от предыдущих клавиш
+        // 清除之前的按键
         $('.kalimba-container').empty();
-        // Отображаем колесо загрузки
+        // 显示加载轮
         $('.kalimba-container').attr("aria-busy", true);
 
-        // Обновляем события
+        // 更新事件
         KalimbaSF.then((k) => {
-            // Получаем новый инструмент
+            // 获取新乐器
             this.kalimba = k;
-            // Добавляем клавиши на экран
+            // 在屏幕上添加按键
             this.addKeys();
-            // Скрываем колесо загрузки
+            // 隐藏加载轮
             $('.kalimba-container').removeAttr("aria-busy");
         });
     }
 
-    // Возвращает массив нот с текущими настройками
+    // 返回带有当前设置的音符数组
     getNotes() {
-        const majorIntervals = [2, 2, 1, 2, 2, 2, 1]; // тон-тон-полутон-тон-тон-тон-полутон
-        const minorIntervals = [2, 1, 2, 2, 1, 2, 2]; // тон-полутон-тон-тон-полутон-тон-тон
+        const majorIntervals = [2, 2, 1, 2, 2, 2, 1]; // 全音-全音-半音-全音-全音-全音-半音
+        const minorIntervals = [2, 1, 2, 2, 1, 2, 2]; // 全音-半音-全音-全音-半音-全音-全音
 
-        // Определяем пустой массив для заполнения
+        // 定义一个空数组用于填充
         const notes = [];
-        // Получаем начальную (базовую) ноту, с которой пойдёт отсчёт
+        // 获取起始（基准）音符，从它开始计数
         var currentIndex = this.baseNote;
-        // Цикл по количеству клавиш
+        // 循环按键数量
         for (let i = 0; i < this.keysCount; i++) {
-            // Добавляем в массив клавишу с текущим индексом и плюсом учитываем тюнинг
+            // 将当前索引的按键添加到数组，并加上调音
             notes.push(allNotesSharp[currentIndex + this.tunes[i]]);
-            // Добавляем к индексу тон/полутон в зависимости от выбранной гаммы
+            // 根据选定的音阶向索引添加全音/半音
             currentIndex += majorIntervals[i%7];
         }
-        // Возвращаем итоговый массив
+        // 返回最终数组
         return notes;
     }
 
     
-    // Добавляет Клавиши на форму
+    // 在表单上添加按键
     addKeys() {
-        // Чистим поле от предыдущих клавиш
+        // 清除之前的按键
         $('.kalimba-container').empty();
 
-        // Получаем массив нот с текущими настройками
+        // 获取带有当前设置的音符数组
         let notesArray = this.getNotes();
-        
-        // Сортируем ноты
+
+        // 对音符进行排序
         let sortedNotes = notesArray;
 
         switch (this.arrangement) {
@@ -324,36 +331,36 @@ class Kalimba_Online {
                 break;
         }
 
-        // Перебираем массив с клавишами, которые надо добавить на поле
+        // 遍历需要添加到字段的按键数组
         sortedNotes.forEach((note) => {
-            // Получаем номер клавиши, где C4 - 0, D4 - 1 и т.д.
+            // 获取按键编号，其中 C4 - 0, D4 - 1 等
             let num = notesArray.indexOf(note);
-            // Теперь номера 8 9 10 ... преобразовываем в 1 2 3 ...
+            // 将编号 8 9 10 ... 转换为 1 2 3 ...
             let labelNum = num % 7 + 1;
 
-            // Определяем сколько точек нужно нарисовать сверху цифры
+            // 确定需要在数字上方绘制多少个点
             let dots = "";
             for (let i = 0; i < Math.floor(num / 7); i++) dots += ".";
             if (dots === "..") dots = ":";
 
-            // Получаем итоговую метку клавиши
+            // 获取按键的最终标签
             let label = dots + "\n" + labelNum;
 
             let keys = notesArray.length;
             let x = notesArray.indexOf(note);
 
-            // Расчитываем высоту клавиши
-            // let keyHeight = 165 + 5*(keys - x); // Прямолинейная
-            // let keyHeight = 315 - 5*(21-keys) - 30*Math.sqrt(x); // Степенная
-            // let keyHeight = 280 - 4*(21-keys) - 25*Math.sqrt(x); // Степенная
-            let keyHeight = 260 - 3*(21-keys) - 20*Math.sqrt(x); // Степенная
+            // 计算按键高度
+            // let keyHeight = 165 + 5*(keys - x); // 直线型
+            // let keyHeight = 315 - 5*(21-keys) - 30*Math.sqrt(x); // 幂函数型
+            // let keyHeight = 280 - 4*(21-keys) - 25*Math.sqrt(x); // 幂函数型
+            let keyHeight = 260 - 3*(21-keys) - 20*Math.sqrt(x); // 幂函数型
 
             let letter = note.replace(/#/g, '♯');
 
-            // Получаем надпись клавиатурной клавиши по номеру
+            // 根据编号获取键盘按键的标签
             let keyboardKey = this.currentKeyboardScheme[num];
 
-            // Создаём клавишу
+            // 创建按键
             const keyZone = $('<div>')
                 .addClass('key-zone')
                 .attr('note', note)
@@ -373,7 +380,7 @@ class Kalimba_Online {
                     )
                 );
 
-            /* В keyZone генерируется следующая структура:
+            /* 在 keyZone 中生成以下结构：
                 <div class="key-zone" note="{note}" style="height: {keyHeight + 'px'};">
                     <div class="key">
                         <div class="note-text">
@@ -385,48 +392,48 @@ class Kalimba_Online {
                 </div>
             */
 
-            // Событие: Одиночное нажатие мышкой по клавише
+            // 事件：鼠标单击按键
             keyZone.on('mousedown', () => {
-                // Если пользователь с тачскрином, звук воспроизводится в другом событии
+                // 如果用户使用触摸屏，声音在其他事件中播放
                 if (!this.ifTouchscreen) {
                     this.playSound(note);
                 }
             });
 
-            // Событие: Зажатие мышки и ведение по клавишам
+            // 事件：按住鼠标并在按键上移动
             keyZone.on('mouseover', (event) => {
-                // Если нажата мышь и курсор находится внутри клавиши (без второй проверки, событие вызывается лишний раз)
+                // 如果按下鼠标且光标在按键内部（没有第二次检查，事件会被额外调用）
                 if (isMouseDown && !$(event.relatedTarget).closest(keyZone).length) {
                     this.playSound(note);
                 }
             });
 
-            // Событие: Одиночное нажатие пальцем по клавише
+            // 事件：手指单击按键
             keyZone.on('touchstart', (event) => {
-                // Если сработало это событие, значит пользователь с тачскрином
+                // 如果触发此事件，说明用户使用触摸屏
                 this.ifTouchscreen = true;
 
                 // let note = $(this).attr('note');
                 this.playSound(note);
                 // keyShake($('.key', this));
 
-                // Смотрим какое последнее касание экрана было
+                // 查看最后一次触摸屏幕的位置
                 let key = $(event.touches[event.touches.length - 1].target);
-                // Находим родительский элемент, пока у него не будет аттрибута note
+                // 查找父元素，直到它有 note 属性
                 let i = 0;
                 while (key.attr('note') === undefined && i<2) {
                     key = key.parent();
                     i++;
                 }
-                // Получаем ноту из атрибута и записываем
+                // 从属性获取音符并记录
                 this.lastTouchKeysPressed[event.touches.length - 1] = key.attr('note');
 
             });
 
-            // Событие: Зажатие пальцем и ведение по клавишам
+            // 事件：按住手指并在按键上移动
             keyZone.on('touchmove', (event) => {
                 for (let j = 0; j < event.touches.length; j++) {
-                    var touch = event.touches[j]; // Получаем информацию о первом пальце
+                    var touch = event.touches[j]; // 获取第一根手指的信息
                     var key = $(document.elementFromPoint(touch.clientX, touch.clientY));
 
                     let i = 0;
@@ -444,50 +451,50 @@ class Kalimba_Online {
                 }
             });
 
-            // Добавляем созданную клавишу на поле
+            // 将创建的按键添加到字段
             $('.kalimba-container').append(keyZone);
         });
 
-        // Обновляем метки
+        // 更新标签
         updateLabels();
     }
 
-    // Воспроизводит звук
+    // 播放声音
     playSound(note, options = { play: true, animate: true, record: true }) {
 
-        // Воспроизводим звук, если флаг play установлен в true
+        // 如果 play 标志为 true，则播放声音
         if (options.play) {
-            // Считаем громкость по логарифмической шкале (по ощущениям хуже, чем с обычной шкалой):
+            // 按对数刻度计算音量（感觉上不如普通刻度）：
             // let currentVolume = this.currentSoundfont.gain * Math.log10(1 + 9 * this.volume / 100);
-            // Считаем громкость по обычной шкале:
+            // 按普通刻度计算音量：
             let currentVolume = this.currentSoundfont.gain * this.volume / 100;
-            // Воспроизводим звук с текущей кромкостью
+            // 以当前音量播放声音
             this._kalimba.play(note, 0, { gain: currentVolume });
         }
 
-        // Запускаем анимацию, если флаг animate установлен в true
+        // 如果 animate 标志为 true，则启动动画
         if (options.animate) {
             this.keyShake($(`.key-zone[note='${note}'] .key`));
         }
         console.log('Pressed \'' + note + '\' (' + allNotesSharp.indexOf(note) + ')');
 
-        // Записываем нажатую ноту, если флаги record и isRecording установлены в true
+        // 如果 record 和 isRecording 标志都为 true，则记录按下的音符
         if (options.record && isRecording) {
-            // Если это первая нажатая нота, то запоминаем время нажатия
+            // 如果是第一个按下的音符，则记录按下时间
             if (sequence.length == 0) prevTime = Date.now();
-            // Запоминаем текущее время
+            // 记录当前时间
             var currentTime = Date.now();
-            // Считаем сколько времени прошло с предыдущего нажатия ноты
+            // 计算自上次按下音符以来经过的时间
             var timeElapsed = currentTime - prevTime;
-            // Добавляем в массив с нотами ноту
+            // 将音符添加到音符数组
             sequence.push({ soundId: note, time: timeElapsed });
             console.log('[REC] Recorded \'' + note + '\' with a duration of ' + timeElapsed + 'ms');
-            // Обновляем время последнего нажатия клавиши на текущее
+            // 将最后一次按键时间更新为当前时间
             prevTime = currentTime;
         }
     }
     
-    // Воспроизводит анимацию тряски клавиши
+    // 播放按键抖动动画
     keyShake(keyObj) {
         keyObj.removeClass('key-click');
         setTimeout(() => {
@@ -500,16 +507,16 @@ const kalimba_online = new Kalimba_Online();
 
 
 // // // // // // // //
-//  ФУНКЦИИ И МЕТОДЫ //
+//  函数和方法  //
 // // // // // // // //
 
-// updateKeyboardSchemes обновляет надписи клавиатурных клавиш на клавишах калимбы
+// updateKeyboardSchemes 更新 Kalimba 按键上的键盘按键标签
 function updateKeyboardSchemes() {
     $(".key-zone").each(function(){
         var notenumberValue = $(this).attr("notenumber");
-        // Получаем надпись клавиатурной клавиши по номеру
+        // 根据编号获取键盘按键的标签
         let keyboardKey = kalimba_online.currentKeyboardScheme[notenumberValue];
-        
+
         if (keyboardKey !== undefined) {
             $(this).find(".note-keyboard-key").text(keyboardKeys[keyboardKey]);
         } else {
@@ -518,14 +525,14 @@ function updateKeyboardSchemes() {
     });
 }
 
-// updateTunes обновляет элементы управления, которые настраивают клавиши (тюнинг клавиш)
+// updateTunes 更新配置按键的控件（按键调音）
 function updateTunes() {
-    // Опустошаем поле
+    // 清空字段
     $('.tune-field').empty();
 
-    // Получаем массив клавиш с текущими настройками
+    // 获取带有当前设置的按键数组
     let notesArray = kalimba_online.getNotes();
-    // Перебираем клавиши
+    // 遍历按键
     notesArray.forEach((note, index) => {
         let letter = note.replace(/#/g, '♯');
         $('<label>', {
@@ -551,42 +558,42 @@ function updateTunes() {
         ).appendTo('.tune-field');
     });
 
-    // Событие при смене ползунков настройки клавиш
+    // 按键设置滑块更改时的事件
     $('input', '.tune-label').on('input', function () {
-        // Получаем порядковый номер изменённой клавиши и новое значение
+        // 获取更改的按键的序号和新值
         let notenumber = parseInt($(this).attr('notenumber'));
         let tune = parseInt($(this).val());
 
-        // Получаем текущий массив настроек, меняем и сохраняем обратно
+        // 获取当前设置数组，更改并保存回去
         let tunes = kalimba_online.tunes;
         tunes[notenumber] = tune;
         kalimba_online.tunes = tunes;
 
-        // Пересоздаём клавиши
+        // 重新创建按键
         kalimba_online.addKeys();
-        
-        // Получаем текущий список нот
+
+        // 获取当前音符列表
         let notesArray = kalimba_online.getNotes();
-        // Находим ноту в массиве по её номеру и заменяем # на ♯
+        // 根据编号在数组中找到音符并将 # 替换为 ♯
         let letter = notesArray[notenumber].replace(/#/g, '♯');
 
-        // Заменяем навзение клавиши в настройках клавиши
+        // 在按键设置中替换按键名称
         $('#range-tune-value-' + notenumber).empty().append(
             $('<small>').text(letter.slice(0, -1)).append(
                 $('<sub>').text(letter.slice(-1))
             )
         );
-        // Воспроизводим звук изменённой клавиши
+        // 播放更改的按键的声音
         kalimba_online.playSound(notesArray[notenumber], { play: true, animate: true, record: false });
     });
 }
 
-// showKeyboardScheme выделяет на клавиатуре кнопки выбранной схемы
+// showKeyboardScheme 在键盘上高亮显示所选方案的按键
 function showKeyboardScheme(keyMapScheme) {
-    // Перебираем все клавиши на клавиатуре
+    // 遍历键盘上的所有按键
     $('.kb_key', '.kb_container').each(function (index, key) {
         let keycode = $(key).data('keycode');
-        // Если клавиша есть в указанной схеме, то добавляем класс, иначе убираем
+        // 如果按键在指定方案中，则添加类，否则移除
         if (keyMapScheme.includes(keycode)) {
             $(key).addClass('used');
         } else {
@@ -596,255 +603,389 @@ function showKeyboardScheme(keyMapScheme) {
 }
 
 // // // // // // // // // // //
-//  ПОСЛЕ ОТРИСОВКИ СТРАНИЦЫ  //
+//  页面渲染完成后  //
 // // // // // // // // // // //
 
 $(document).ready(function () {
     
-    // Событие нажатия на кнопку записи
+    // 录制按钮点击事件
     $('#recordButton').click(function() {
         if (isRecording) {
-            // Если запись велась - останавливаем
+            // 如果正在录制 - 停止
             isRecording = false;
 
-            // Меняем иконки на кнопке
+            // 更改按钮上的图标
             $("#icon-record").show();
             $("#icon-spin").hide();
 
-            // Если записана хоть одна нота
+            // 如果至少录制了一个音符
             if (sequence.length > 0) {
-                // Добавляем пустую ноту с пузой между последней нажатой клавиши и остановкой записи 
+                // 在最后一次按键和停止录制之间添加一个带间隔的空音符
                 var timeElapsed = Date.now() - prevTime;
                 sequence.push({ soundId: null, time: timeElapsed });
 
-                // Делаем активной кнопку воспроизведения
+                // 激活播放按钮
                 $("#playButton").attr("disabled", null);
 
-                // Считаем сколько секунд длится вся запись
+                // 计算整个录制持续多少秒
                 let duration = 0;
                 for (let i = 0; i < sequence.length; i++) {
                     duration += sequence[i].time;
                 }
                 duration = duration/1000;
-                // Устанавливаем время анимации для кругового прогресс-бара
+                // 为圆形进度条设置动画时间
                 $("#playButton .loader").css('--anim-load-duration', duration+"s");
 
-                // Сохраняем запись в localStorage
+                // 将录制保存到 localStorage
                 kalimba_online.recordedNotes = sequence;
-                
-                // Сообщаем в логи что запись закончена
+
+                // 在日志中通知录制结束
                 console.log('[REC] Recording stopped. Total duration: ' + duration + 's');
                 console.log('[REC] Recorded sequence:', sequence);
             }
         } else {
-            // Если запись НЕ велась - начинаем записывать
+            // 如果没有在录制 - 开始录制
             isRecording = true;
 
-            // Сообщаем в логи что началась запись
+            // 在日志中通知开始录制
             console.log('[REC] Recording started');
 
-            // Создаём пустой массив для записанной последовательности
+            // 为录制的序列创建一个空数组
             sequence = [];
 
-            // Меняем иконки на кнопке 
+            // 更改按钮上的图标
             $("#icon-record").hide();
             $("#icon-spin").show();
 
-            // Делаем НЕактивной кнопку воспроизведения
+            // 使播放按钮不活动
             $("#playButton").attr("disabled", "");
         }
     });
 
-    // Событие нажатия на кнопку воспроизведения
+    // 播放按钮点击事件
     $('#playButton').click(function() {
         if (isPlaying) {
-            // Если запись проигрывалась - останавливаем
+            // 如果正在播放 - 停止
             isPlaying = false;
-            
-            // Меняем иконки на кнопке 
+
+            // 更改按钮上的图标
             $("#icon-play").show();
             $("#icon-pause").hide();
             $("#icon-load").hide();
 
-            // Делаем активной кнопку записи
+            // 激活录制按钮
             $("#recordButton").attr("disabled", null);
         } else {
-            // Если запись НЕ проигрывалась - начинаем воспроизведение
+            // 如果没有在播放 - 开始播放
             isPlaying = true;
             let index = 0;
 
-            // Объявляем рекурсивную функцию, которая воспроизводит текущую ноту и запускает себя со следующей нотой через паузу sequence[index].time
+            // 声明一个递归函数，它播放当前音符并在暂停 sequence[index].time 后用下一个音符启动自己
             function playNextNote() {
-                // Завершаем воспроизведение, если флаг выключен
+                // 如果标志关闭，则结束播放
                 if (!isPlaying) return;
-                // Воспроизводим текущую ноту с параметрами: без анимации и без записи
+                // 播放当前音符，参数为：无动画和无录制
                 if (sequence[index].soundId != null) kalimba_online.playSound(sequence[index].soundId, { play: true, animate: false, record: false });
-                // Увеличиваем индекс (и зацикливаем)
+                // 增加索引（并循环）
                 index = (index + 1) % sequence.length;
-                // Запускаем следующую ноту после паузы
+                // 在暂停后启动下一个音符
                 setTimeout(playNextNote, sequence[index].time);
             }
-            // Запускаем рекурсивную функцию
+            // 启动递归函数
             playNextNote();
 
-            // Меняем иконки на кнопке 
+            // 更改按钮上的图标
             $("#icon-play").hide();
             $("#icon-pause").show();
             $("#icon-load").show();
 
-            // Делаем НЕактивной кнопку записи
+            // 使录制按钮不活动
             $("#recordButton").attr("disabled", "");
         }
     });
 
-    // Проверяем, есть ли в localStorage запись
+    // 检查 localStorage 中是否有录制
     if (kalimba_online.recordedNotes.length > 0) {
-        // Получаем запись из localStorage
+        // 从 localStorage 获取录制
         sequence = kalimba_online.recordedNotes;
 
-        // Делаем активной кнопку воспроизведения
+        // 激活播放按钮
         $("#playButton").attr("disabled", null);
 
-        // Считаем сколько секунд длится вся запись
+        // 计算整个录制持续多少秒
         let duration = 0;
         for (let i = 0; i < sequence.length; i++) {
             duration += sequence[i].time;
         }
         duration = duration/1000;
-        // Устанавливаем время анимации для кругового прогресс-бара
+        // 为圆形进度条设置动画时间
         $("#playButton .loader").css('--anim-load-duration', duration+"s");
     }
 
-    // Отображаем настройки громкости на странице (из localStorage)
-    $('#range-volume').val(kalimba_online.volume);
-    $('#range-volume-value').text(kalimba_online.volume);
-    // Событие при смене громкости
-    $('#range-volume').on('input', function () {
-        kalimba_online.volume = $('#range-volume').val();
+    // 在页面上显示音量设置（从 localStorage）
+
+        $('#range-volume').val(kalimba_online.volume);
+
         $('#range-volume-value').text(kalimba_online.volume);
-        kalimba_online.addKeys();
-        updateTunes();
-    });
 
-    // Отображаем количество keysCount клавиш на странице (из localStorage)
-    $('#range-keys').val(kalimba_online.keysCount);
-    $('#range-keys-value').text(kalimba_online.keysCount);
-    // Событие при смене количества клавиш
-    $('#range-keys').on('input', function () {
-        kalimba_online.keysCount = $('#range-keys').val();
-        $('#range-keys-value').text(kalimba_online.keysCount);
-        kalimba_online.addKeys();
-        updateTunes();
-    });
+        // 音量更改时的事件
 
-    updateTunes();
+        $('#range-volume').on('input', function () {
 
-    // Отображаем базовую клавишу baseNote на странице (из localStorage)
-    $('#range-baseNote').val(kalimba_online.baseNote);
-    // $('#range-baseNote-value').text(allNotesSharp[kalimba_online.baseNote]);
-    let letter = allNotesSharp[kalimba_online.baseNote].replace(/#/g, '♯');
-    $('#range-baseNote-value').empty().append(
-        $('<span>').text(letter.slice(0, -1)).append(
-            $('<sub>').text(letter.slice(-1))
-        )
-    );
+            kalimba_online.volume = $('#range-volume').val();
 
-    // Событие при смене базовой ноты
-    $('#range-baseNote').on('input', function () {
-        kalimba_online.baseNote = $('#range-baseNote').val();
-        // $('#range-baseNote-value').text(allNotesSharp[kalimba_online.baseNote]);
-        
-        let letter = allNotesSharp[kalimba_online.baseNote].replace(/#/g, '♯');
-        $('#range-baseNote-value').empty().append(
-            $('<span>').text(letter.slice(0, -1)).append(
-                $('<sub>').text(letter.slice(-1))
-            )
-        );
-        kalimba_online.addKeys();
-        kalimba_online.playSound(allNotesSharp[kalimba_online.baseNote], { play: true, animate: false, record: false });
-        updateTunes();
-    });
+            $('#range-volume-value').text(kalimba_online.volume);
 
-    // Отображаем порядок Arrangement клавиш на странице (из localStorage)
-    $("input#"+kalimba_online.arrangement).prop('checked', true);
-    // Событие при смене Arrangement
-    $('input', '#arrangement-radio-list').on("click", function () {
-        kalimba_online.arrangement = $('input:checked', '#arrangement-radio-list').attr("id");
-        kalimba_online.addKeys();
-    });
+            kalimba_online.addKeys();
 
-    // Отображаем тип меток Labeltype на странице (из localStorage)
-    $("input#" + kalimba_online.labelType).prop('checked', true);
-    // Событие при смене Labeltype
-    $('input', '#labeltype-radio-list').on("click", function () {
-        kalimba_online.labelType = $('input:checked', '#labeltype-radio-list').attr("id");
-        updateLabels();
-    });
+            updateTunes();
 
-
-    // Отображаем набор звуков Soundfont на странице (из localStorage)
-    $('#soundfonts').val(kalimba_online.soundfont);
-    $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
-    // Событие при смене Soundfont
-    $('#soundfonts').change(function () {
-        kalimba_online.soundfont = $(this).val();
-        kalimba_online.loadSF();
-        $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
-    });
-
-    // Обработчик события keydown
-    $(document).on('keydown', function (event) {
-
-        // Проверка, есть ли нота для нажатой клавиши
-        if (kalimba_online.currentKeyboardScheme.includes(event.keyCode)) {
-            // Получаем номер нажатой клавиши и массив нот
-            let keyNum = kalimba_online.currentKeyboardScheme.indexOf(event.keyCode);
-            let notesArray = kalimba_online.getNotes();
-            // Если нажат пробел, повышаем октаву
-            if (isSpacePressed) keyNum +=7;
-            // Вопроизводим звук
-            if (notesArray.hasOwnProperty(keyNum)) kalimba_online.playSound(notesArray[keyNum]);
-        }
-    });
-
-
-    // Добавляем клавиатуру на страницу
-    // Перебираем ряды клавиатуры
-    keyboardKeyInfo.forEach(row => {
-        const rowElement = $('<div class="kb_row"></div>');
-        // Перебираем клавиши в ряду
-        row.forEach(key => {
-            // Создаём тег с клавишей и добавляем его на страницу
-            $('<div class="kb_key"></div>')
-                .text(keyboardKeys[key.code])
-                .css('flex-grow', key.length)
-                .attr("data-keycode", key.code)
-                .appendTo(rowElement);
         });
-        // Добавляем созданный ряд в контейнер с клавиатурой на странице
-        $('#keyboard_container').append(rowElement);
-    });
 
-    // Отображаем схемы управления с клавиатур, хранящиеся в массиве keyboardSchemes
-    keyboardSchemes.forEach(function(_key, index) {
-        $('<label style="padding-right: 1.4em;">')
-            .appendTo($('#keyboard_schemes'))
-            .append(
-                $('<input type="radio" name="kb_scheme">')
-                    .attr('data-schemeid', index)
-                    .prop('checked', index == kalimba_online.keyboardScheme)
+    
+
+        // 在页面上显示按键数量 keysCount（从 localStorage）
+
+        $('#range-keys').val(kalimba_online.keysCount);
+
+        $('#range-keys-value').text(kalimba_online.keysCount);
+
+        // 按键数量更改时的事件
+
+        $('#range-keys').on('input', function () {
+
+            kalimba_online.keysCount = $('#range-keys').val();
+
+            $('#range-keys-value').text(kalimba_online.keysCount);
+
+            kalimba_online.addKeys();
+
+            updateTunes();
+
+        });
+
+    
+
+        updateTunes();
+
+    
+
+        // 在页面上显示基准按键 baseNote（从 localStorage）
+
+        $('#range-baseNote').val(kalimba_online.baseNote);
+
+        // $('#range-baseNote-value').text(allNotesSharp[kalimba_online.baseNote]);
+
+        let letter = allNotesSharp[kalimba_online.baseNote].replace(/#/g, '♯');
+
+        $('#range-baseNote-value').empty().append(
+
+            $('<span>').text(letter.slice(0, -1)).append(
+
+                $('<sub>').text(letter.slice(-1))
+
             )
-            .append(' ')
-            .append($('<span>').text(index + 1));
-    });
-    // Отображаем на клавиатуре текущую схему
-    showKeyboardScheme(kalimba_online.currentKeyboardScheme);
-    // Отмечаем выбранной текущую схему
-    $("input#"+kalimba_online.currentKeyboardScheme).prop('checked', true);
-    // Создаём событие на смену схемы
-    $('input', '#keyboard_control').on("click", function () {
-        kalimba_online.keyboardScheme = $('input:checked', '#keyboard_control').data("schemeid");
+
+        );
+
+    
+
+        // 基准音符更改时的事件
+
+        $('#range-baseNote').on('input', function () {
+
+            kalimba_online.baseNote = $('#range-baseNote').val();
+
+            // $('#range-baseNote-value').text(allNotesSharp[kalimba_online.baseNote]);
+
+    
+
+            let letter = allNotesSharp[kalimba_online.baseNote].replace(/#/g, '♯');
+
+            $('#range-baseNote-value').empty().append(
+
+                $('<span>').text(letter.slice(0, -1)).append(
+
+                    $('<sub>').text(letter.slice(-1))
+
+                )
+
+            );
+
+            kalimba_online.addKeys();
+
+    
+
+            kalimba_online.playSound(allNotesSharp[kalimba_online.baseNote], { play: true, animate: false, record: false });
+
+            updateTunes();
+
+        });
+
+    
+
+        // 在页面上显示按键顺序 Arrangement（从 localStorage）
+
+        $("input#"+kalimba_online.arrangement).prop('checked', true);
+
+        // Arrangement 更改时的事件
+
+        $('input', '#arrangement-radio-list').on("click", function () {
+
+            kalimba_online.arrangement = $('input:checked', '#arrangement-radio-list').attr("id");
+
+            kalimba_online.addKeys();
+
+        });
+
+    
+
+        // 在页面上显示标签类型 Labeltype（从 localStorage）
+
+        $("input#" + kalimba_online.labelType).prop('checked', true);
+
+        // Labeltype 更改时的事件
+
+        $('input', '#labeltype-radio-list').on("click", function () {
+
+            kalimba_online.labelType = $('input:checked', '#labeltype-radio-list').attr("id");
+
+            updateLabels();
+
+        });
+
+    
+
+    
+
+        // 在页面上显示音源集 Soundfont（从 localStorage）
+
+        $('#soundfonts').val(kalimba_online.soundfont);
+
+        $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
+
+        // Soundfont 更改时的事件
+
+        $('#soundfonts').change(function () {
+
+            kalimba_online.soundfont = $(this).val();
+
+            kalimba_online.loadSF();
+
+            $("#soundfonts_source").attr("href", kalimba_online.currentSoundfont.sourceUrl);
+
+        });
+
+    
+
+        // keydown 事件处理器
+
+        $(document).on('keydown', function (event) {
+
+    
+
+            // 检查按下的按键是否有音符
+
+            if (kalimba_online.currentKeyboardScheme.includes(event.keyCode)) {
+
+                // 获取按下按键的编号和音符数组
+
+                let keyNum = kalimba_online.currentKeyboardScheme.indexOf(event.keyCode);
+
+                let notesArray = kalimba_online.getNotes();
+
+                // 如果按下空格，提高八度
+
+                if (isSpacePressed) keyNum +=7;
+
+                // 播放声音
+
+                if (notesArray.hasOwnProperty(keyNum)) kalimba_online.playSound(notesArray[keyNum]);
+
+            }
+
+        });
+
+    
+
+    
+
+        // 在页面上添加键盘
+
+        // 遍历键盘行
+
+        keyboardKeyInfo.forEach(row => {
+
+            const rowElement = $('<div class="kb_row"></div>');
+
+            // 遍历行中的按键
+
+            row.forEach(key => {
+
+                // 创建按键标签并将其添加到页面
+
+                $('<div class="kb_key"></div>')
+
+                    .text(keyboardKeys[key.code])
+
+                    .css('flex-grow', key.length)
+
+                    .attr("data-keycode", key.code)
+
+                    .appendTo(rowElement);
+
+            });
+
+            // 将创建的行添加到页面上的键盘容器
+
+            $('#keyboard_container').append(rowElement);
+
+        });
+
+    
+
+        // 显示存储在 keyboardSchemes 数组中的键盘控制方案
+
+        keyboardSchemes.forEach(function(_key, index) {
+
+            $('<label style="padding-right: 1.4em;">')
+
+                .appendTo($('#keyboard_schemes'))
+
+                .append(
+
+                    $('<input type="radio" name="kb_scheme">')
+
+                        .attr('data-schemeid', index)
+
+                        .prop('checked', index == kalimba_online.keyboardScheme)
+
+                )
+
+                .append(' ')
+
+                .append($('<span>').text(index + 1));
+
+        });
+
+        // 在键盘上显示当前方案
+
         showKeyboardScheme(kalimba_online.currentKeyboardScheme);
-        updateKeyboardSchemes();
+
+        // 标记当前选中的方案
+
+        $("input#"+kalimba_online.currentKeyboardScheme).prop('checked', true);
+
+        // 创建方案更改事件
+
+        $('input', '#keyboard_control').on("click", function () {
+
+            kalimba_online.keyboardScheme = $('input:checked', '#keyboard_control').data("schemeid");
+
+            showKeyboardScheme(kalimba_online.currentKeyboardScheme);
+
+            updateKeyboardSchemes();
+
+        });
+
     });
-});

@@ -1,18 +1,18 @@
 
 var langs = [
-    {code: 'ru', text: 'Russian (Русский)'}, // Русский язык
-    {code: 'en', text: 'English (English)'}, // Английский язык
-    {code: 'de', text: 'German (Deutsch)'}, // Немецкий язык
-    {code: 'es', text: 'Spanish (Español)'}, // Испанский язык
-    {code: 'fr', text: 'French (Français)'}, // Французский язык
-    {code: 'zh-CN', text: 'Chinese (中文)'}, // Китайский язык (упрощённый)
-    {code: 'ar', text: 'Arabic (العربية)'}, // Арабский язык
-    {code: 'pt', text: 'Portuguese (Português)'}, // Португальский язык
-    {code: 'ja', text: 'Japanese (日本語)'}, // Японский язык
-    {code: 'id', text: 'Indonesian (Bahasa Indonesia)'} // Индонезийский язык
+    {code: 'ru', text: 'Russian (Русский)'}, // 俄语
+    {code: 'en', text: 'English (English)'}, // 英语
+    {code: 'de', text: 'German (Deutsch)'}, // 德语
+    {code: 'es', text: 'Spanish (Español)'}, // 西班牙语
+    {code: 'fr', text: 'French (Français)'}, // 法语
+    {code: 'zh-CN', text: 'Chinese (中文)'}, // 中文（简体）
+    {code: 'ar', text: 'Arabic (العربية)'}, // 阿拉伯语
+    {code: 'pt', text: 'Portuguese (Português)'}, // 葡萄牙语
+    {code: 'ja', text: 'Japanese (日本語)'}, // 日语
+    {code: 'id', text: 'Indonesian (Bahasa Indonesia)'} // 印尼语
 ];
 
-// Сортирует массив языков по полю text
+// 按 text 字段对语言数组进行排序
 langs.sort(function(a, b) {
     var textA = a.text.toUpperCase();
     var textB = b.text.toUpperCase();
@@ -21,45 +21,45 @@ langs.sort(function(a, b) {
 
 var currentLang = window.localStorage && null !== window.localStorage.getItem("localization") ? window.localStorage.getItem("localization") : getUserLang();
 
-// Возвращает код языка пользователя
+// 返回用户语言代码
 function getUserLang() {
-    // Получаем предпочитаемые языки пользователя из navigator.languages
+    // 从 navigator.languages 获取用户首选语言
     var userLangs = navigator.languages;
 
-    // Перебираем языки в порядке предпочтения
+    // 按优先级遍历语言
     for (var i = 0; i < userLangs.length; i++) {
-        // Находим язык пользователя в массиве langs
+        // 在 langs 数组中查找用户语言
         var userLanguage = langs.find(function(lang) {
             return lang.code === userLangs[i];
         });
-        // Если язык нашёлся, то возвращаем его код
+        // 如果找到语言，则返回其代码
         if (userLanguage) return userLanguage.code;
     }
 
-    // Если ни один из языков не нашёлся, возвращаем код Английского языка
+    // 如果没有找到任何语言，则返回英语代码
     return 'en';
 }
 
-// Подгружаем дефолтный язык (на случай, если в выбранном языке нет локализации для каких-либо ключей)
+// 加载默认语言（以防所选语言中某些键没有本地化）
 var defaultLocalization;
 $.getJSON('/lang/en.json', function(data) {
     defaultLocalization = data;
 });
 
-// Переводит всю страницу на указанный язык
+// 将整个页面翻译为指定语言
 function loadLanguage(lang) {
     $.getJSON('/lang/' + lang + '.json', function(data) {
         $('html').attr('lang', lang);
         $('[data-i18n]').each(function() {
             var key = $(this).data('i18n');
-            // Если ключа в локализации нет, ключ берётся из дефолтного языка
+            // 如果本地化中没有该键，则从默认语言中获取
             $(this).text(data[key] || defaultLocalization[key]);
         });
         $('meta[name="description"]').attr('content', data["seo.description"] || defaultLocalization["seo.description"]);
     });
 }
 
-// Заполняет элемент выбора языка на странице доступными языками 
+// 用可用语言填充页面上的语言选择元素
 function fillLangSelector() {
     const LangSelector = $('#localization');
     LangSelector.empty();
@@ -75,13 +75,13 @@ function fillLangSelector() {
 }
 
 $(document).ready(function() {
-    // Заполняем элемент выбора языка на странице доступными языками
+    // 用可用语言填充页面上的语言选择元素
     fillLangSelector();
 
-    // Подгружаем текущий язык
+    // 加载当前语言
     loadLanguage(currentLang);
 
-    // Событие при смене локализации
+    // 本地化更改时的事件
     $('#localization').change(function () {
         currentLang = $(this).val();
         window.localStorage && window.localStorage.setItem("localization", currentLang);

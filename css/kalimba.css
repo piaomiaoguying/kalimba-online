@@ -1,5 +1,5 @@
 html {
-    /* Отключает двойной тап по экрану */
+    /* 禁用屏幕双击 */
     touch-action: manipulation;
 }
 
@@ -11,15 +11,15 @@ html {
     touch-action: none;
 }
 
-/* Для телефонов */
+/* 用于手机 */
 @media (min-width: 0px) {
     .kalimba-container {
-        /* Отступы между между клавишами */
+        /* 按键之间的间距 */
         justify-content: space-evenly;
     }
 }
 
-/* Для ПК */
+/* 用于 PC */
 @media (min-width: 768px) {
     .kalimba-container {
         justify-content: center;
@@ -60,7 +60,7 @@ html {
 
 
 
-/* Для телефонов */
+/* 用于手机 */
 @media (min-width: 0px) {
     .key {
         margin: 2px;
@@ -72,7 +72,7 @@ html {
     }
 }
 
-/* Для ПК */
+/* 用于 PC */
 @media (min-width: 768px) {
     .key {
         margin: 5px;
@@ -258,9 +258,9 @@ select {
 
 @keyframes shake2 {
     /*
-        Вибрация построена на основе следующей формулы
-        f(x) = (-0.093*x + 0,0927) * COS(100*x) * 1.2^(-10*x) 
-        https://www.desmos.com/calculator/aorly47ttb 
+        振动基于以下公式
+        f(x) = (-0.093*x + 0,0927) * COS(100*x) * 1.2^(-10*x)
+        https://www.desmos.com/calculator/aorly47ttb
     */
     0% {transform: translate3d(0.093em, 0, 0);}
     4% {transform: translate3d(-0.085em, 0, 0);}
@@ -298,33 +298,33 @@ input[type=range][orient=vertical] {
     margin-bottom: 4px;
 }
 
-/* Настраиваем трек в Chrome, Opera, Safari, Edge */
+/* 在 Chrome、Opera、Safari、Edge 中配置轨道 */
 input[type=range][orient=vertical]::-webkit-slider-runnable-track {
     width: 5px;
 }
 
-/* Настраиваем трек в Mozilla Firefox */
+/* 在 Mozilla Firefox 中配置轨道 */
 input[type=range][orient=vertical]::-moz-range-track {
-    /* В Firefox высота трека отличается от других браузеров */
+    /* 在 Firefox 中轨道高度与其他浏览器不同 */
     height: auto;
     width: 5px;
 }
 
-/* Настраиваем ползунок в Chrome, Opera, Safari, Edge */
+/* 在 Chrome、Opera、Safari、Edge 中配置滑块 */
 input[type=range][orient=vertical]::-webkit-slider-thumb {
     height: 23px;
     width: 23px;
     margin: 0 0 0 -9px;
 }
 
-/* Настраиваем ползунок в Firefox (он там почему то больше) */
+/* 在 Firefox 中配置滑块（它在那里更大） */
 input[type=range][orient=vertical]::-moz-range-thumb {
     height: 19px;
     width: 19px;
     margin: 0 0 0 -3px;
 }
 
-/* Меняем фон всех ползунков на текущий цвет темы */
+/* 将所有滑块的背景更改为当前主题颜色 */
 input[type=range]::-moz-range-thumb {
     background: var(--primary);
 }
@@ -353,7 +353,7 @@ input[type=range]::-webkit-slider-thumb {
     flex-wrap: wrap;
 }
 
-/* Стиль для режима "Полный экран" */
+/* "全屏"模式的样式 */
 .fullscreen {
     position: relative;
     display: flex;
@@ -367,10 +367,10 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* ** ** ** ** ** ** ** ** ** ** ** */
-/* ** ПАНЕЛЬ КНОПОК ПОД КАЛИМБОЙ ** */
+/* ** Kalimba 下方的按钮面板 ** */
 /* ** ** ** ** ** ** ** ** ** ** ** */
 
-/* Блок с кнопками под калимбой */
+/* Kalimba 下方的按钮块 */
 .buttons-container {
     margin-top: 1em;
     display: flex;

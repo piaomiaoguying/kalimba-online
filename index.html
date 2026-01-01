@@ -9,23 +9,23 @@
     <link rel="canonical" href="https://kalimba-online.ru" />
 
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Загрузка JQuery с CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-    <!-- Загрузка SoundFontPlayer.js с CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
-    <!-- Загрузка Pico.css с CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.13/css/pico.min.css">
-    
 
-    <!-- Загрузка стилей для кнопки переключения темы -->
+    <!-- 从 CDN 加载 JQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <!-- 从 CDN 加载 SoundFontPlayer.js -->
+    <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
+    <!-- 从 CDN 加载 Pico.css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.13/css/pico.min.css">
+
+
+    <!-- 加载主题切换按钮的样式 -->
     <link rel="stylesheet" href="/css/pico-theme-switcher.css">
     <link rel="stylesheet" href="/css/pico-color-picker.css">
 
-    <!-- Код, отвечающий за полный экран -->
+    <!-- 负责全屏的代码 -->
     <script src="/js/fullscreen.js"></script>
 
-    <!-- Загрузка стилей для калимбы -->
+    <!-- 加载 Kalimba 的样式 -->
     <link rel="stylesheet" href="/css/kalimba.css">
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" /> -->
@@ -51,13 +51,13 @@
 
         <section>
             <article id="main-container" data-theme="generated">
-                <!-- Блок с клавишами -->
+                <!-- 按键块 -->
                 <div class="kalimba-container" aria-busy="true">
-                    <!-- Заполняется в /js/kalimba.js -->
+                    <!-- 在 /js/kalimba.js 中填充 -->
                 </div>
-                <!-- Блок с кнопками -->
+                <!-- 按钮块 -->
                 <div class="buttons-container">
-                    <!-- Кнопка "Fullscreen" -->
+                    <!-- "Fullscreen" 按钮 -->
                     <button id="fullscreenButton" class="button" aria-label="Fullscreen button" title="Fullscreen button">
                         <svg id="fullscreen-on" viewBox="0 0 24 24">
                             <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
@@ -145,7 +145,7 @@
                         <span data-i18n="option.tune"> Tune keys: </span>
                     </label>
                     <div class="tune-field">
-                        <!-- Заполняется в /js/kalimba.js в updateTunes() -->
+                        <!-- 在 /js/kalimba.js 的 updateTunes() 中填充 -->
                     </div>
                 </fieldset>
 
@@ -212,14 +212,14 @@
                 <fieldset id="keyboard_control" class="option-keyboardсontrol">
                     <legend data-i18n="option.keyboardсontrol">Keyboard Control:</legend>
                     <div id="keyboard_schemes" style="display: flex;">
-                        <!-- Заполняется в js/kalimba.js на основе keyboardSchemes -->
+                        <!-- 在 js/kalimba.js 中基于 keyboardSchemes 填充 -->
                     </div>
                     <small data-i18n="option.spaceincrease">The "Space" key increases the octave by 1</small>
                 </fieldset>
 
                 <fieldset class="option-kb_container">
                     <div id="keyboard_container" class="kb_container">
-                        <!-- Заполняется в js/kalimba.js в createKeyboard() -->
+                        <!-- 在 js/kalimba.js 的 createKeyboard() 中填充 -->
                     </div>
                 </fieldset>
 
@@ -244,35 +244,35 @@
     <!-- <a class="github-fork-ribbon" href="https://github.com/Dunamis4tw/kalimba-online" target="_blank" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
     <style>.github-fork-ribbon:before { background-color: var(--switch-background-color); }</style> -->
 
-    <!-- Скрипт смены темы -->
-    <button class="contrast switcher theme-switcher"><i data-i18n="theme.darkmode.on" theme="dark">Turn on dark mode</i><!-- нужно, чтобы span не ставил пробел
+    <!-- 主题切换脚本 -->
+    <button class="contrast switcher theme-switcher"><i data-i18n="theme.darkmode.on" theme="dark">Turn on dark mode</i><!-- 需要，以便 span 不放置空格
          --><i data-i18n="theme.darkmode.off" theme="light">Turn off dark mode</i></button>
     <script src="/js/pico-theme-switcher.js"></script>
-    
-    <!-- Скрипт смены цвета темы -->
+
+    <!-- 主题颜色切换脚本 -->
     <script src="/js/pico-color-picker.js"></script>
-    <!-- Скрипт создания Калимбы -->
+    <!-- 创建 Kalimba 的脚本 -->
     <script src="/js/kalimba.js"></script>
 
-    <!-- Скрипт локализации -->
+    <!-- 本地化脚本 -->
     <script src="/js/lang.js"></script>
 
     <script>
-        // Проверка поддержки service-worker и его регистрация
+        // 检查 service-worker 支持并注册
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
                     .then(registration => {
-                        console.log('[Service-worker] Service Worker зарегистрирован с областью:', registration.scope);
+                        console.log('[Service-worker] Service Worker 已注册，作用域:', registration.scope);
                     })
                     .catch(error => {
-                        console.log('[Service-worker] Регистрация Service Worker не удалась:', error);
+                        console.log('[Service-worker] Service Worker 注册失败:', error);
                     });
             });
         }
     </script>
 
-    <!-- Скрипт, добавляющий кнопку консоли на сайте для отладки на телефонах -->
+    <!-- 在网站上添加控制台按钮用于在手机上调试的脚本 -->
     <!-- <script src="//cdn.jsdelivr.net/npm/eruda"></script>
     <script>eruda.init();</script> -->
 
