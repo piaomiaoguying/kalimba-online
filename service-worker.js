@@ -29,15 +29,15 @@ const urlsToCache = [
     './lang/ru.json',
     './lang/zh-CN.json',
     './soundfonts/keylimba/kalimba.mp3.js',
+    './soundfonts/FluidR3_GM/kalimba-mp3.js',
+    './soundfonts/FatBoy/kalimba-mp3.js',
+    './lib/jquery.min.js',
+    './lib/soundfont-player.min.js',
+    './lib/pico.min.css',
     './favicon.ico',
     './index.html',
     // './manifest.json',
     // './service-worker.js',
-    'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
-    'https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js',
-    'https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.13/css/pico.min.css',
-    'https://gleitz.github.io/midi-js-soundfonts/FatBoy/kalimba-mp3.js',
-    'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/kalimba-mp3.js',
 ];
 
 // 安装 service-worker 时初始化缓存

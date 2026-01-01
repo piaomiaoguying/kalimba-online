@@ -43,12 +43,12 @@ function loadJSONFromLocalStorage(key, default_value) {
 
 const Soundfonts = {
     'FluidR3_GM': {
-        url: 'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/kalimba-mp3.js',
+        url: '/soundfonts/FluidR3_GM/kalimba-mp3.js',
         sourceUrl: 'https://gleitz.github.io/midi-js-soundfonts/',
         gain: 6,
     },
     'FatBoy': {
-        url: 'https://gleitz.github.io/midi-js-soundfonts/FatBoy/kalimba-mp3.js',
+        url: '/soundfonts/FatBoy/kalimba-mp3.js',
         sourceUrl: 'https://gleitz.github.io/midi-js-soundfonts/',
         gain: 6,
     },
