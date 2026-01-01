@@ -804,6 +804,65 @@ docker-compose up -d
 
 ---
 
+### 2026-01-01 - Docker部署安全配置
+
+#### Nginx安全限制
+
+**问题**：Docker部署后，敏感配置文件（README.md、IFLOW.md、Dockerfile、docker-compose.yml、update.sh等）可以通过HTTP直接访问，存在安全隐患。
+
+**解决方案**：
+1. 在Nginx配置中添加访问限制规则
+2. 禁止访问所有文档文件（.md）
+3. 禁止访问配置文件（Dockerfile、docker-compose.yml、nginx.conf）
+4. 禁止访问脚本文件（.sh）
+5. 禁止访问.gitignore、.dockerignore和.git目录
+6. 只允许访问演奏页面所需的核心文件（HTML、CSS、JS、音色库、图片等）
+
+**修改文件**：
+- `nginx.conf` - 添加以下安全配置：
+  ```nginx
+  # 禁止访问敏感配置文件和文档
+  location ~* ^/(README|IFLOW|DOCKER_DEPLOY|LICENSE|CNAME|Dockerfile|docker-compose|update)\.(md|yml|yaml|conf|sh)$ {
+      deny all;
+      return 404;
+  }
+
+  # 禁止访问 .gitignore 和 .dockerignore
+  location ~* ^/\.(gitignore|dockerignore)$ {
+      deny all;
+      return 404;
+  }
+
+  # 禁止访问 .git 目录
+  location ~ /\.git {
+      deny all;
+      return 404;
+  }
+  ```
+
+**技术细节**：
+- 使用正则表达式匹配敏感文件名
+- 所有被禁止访问的文件返回404错误
+- 不影响演奏页面和必要资源的正常访问
+- 需要重新构建并部署Docker容器才能生效
+
+**部署步骤**：
+```bash
+cd /path/to/kalimba-online
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+**验证方法**：
+部署后访问以下地址应返回404：
+- `http://服务器IP:9999/README.md`
+- `http://服务器IP:9999/IFLOW.md`
+- `http://服务器IP:9999/docker-compose.yml`
+- `http://服务器IP:9999/update.sh`
+
+---
+
 ## 附录
 
 ### 项目文件结构

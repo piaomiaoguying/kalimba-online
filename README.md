@@ -48,3 +48,8 @@
 - [ ] 学习演奏音轨的页面
 - [ ] 将加载圆圈替换为"skeleton loading"（是否需要？）
 - [ ] 清理 CSS 代码
+- [x] Docker部署安全配置：
+  - [x] 禁止访问敏感文档文件（README.md、IFLOW.md等）
+  - [x] 禁止访问配置文件（Dockerfile、docker-compose.yml等）
+  - [x] 禁止访问脚本文件（update.sh）
+  - [x] 禁止访问.git目录和.gitignore文件
