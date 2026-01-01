@@ -440,6 +440,42 @@ input[type=range]::-webkit-slider-thumb {
     max-height: 80px;
 }
 
+/* 手机横屏样式 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .fullscreen .kalimba-container {
+        /* 旋转90度，变成横屏布局 */
+        transform: rotate(90deg);
+        transform-origin: center center;
+        height: 100vw;
+        width: 100vh;
+    }
+    
+    .fullscreen .buttons-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+}
+
+/* 手机竖屏全屏时也强制横屏布局 */
+@media (max-width: 768px) {
+    .fullscreen .kalimba-container {
+        /* 旋转90度，变成横屏布局 */
+        transform: rotate(90deg);
+        transform-origin: center center;
+        height: 100vw;
+        width: 100vh;
+    }
+    
+    .fullscreen .buttons-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+}
+
 /* ** ** ** ** ** ** ** ** ** ** ** */
 /* ** Kalimba 下方的按钮面板 ** */
 /* ** ** ** ** ** ** ** ** ** ** ** */
