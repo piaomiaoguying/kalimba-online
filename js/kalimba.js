@@ -227,10 +227,10 @@ class Kalimba_Online {
     get soundfont() { return loadFromLocalStorage("soundfont", "Keylimba"); }
     get currentSoundfont () { return Soundfonts[this.soundfont]; }
     get arrangement() { return loadFromLocalStorage("arrangement", "Alternating"); }
-    get keysCount() { return loadFromLocalStorage("keysCount", 17); }
+    get keysCount() { return loadFromLocalStorage("keysCount", 9); }
     get labelType() { return loadFromLocalStorage("labelType", "Number"); }
     get kalimba () { return this._kalimba; }
-    get baseNote() { return parseInt(loadFromLocalStorage("baseNote", allNotesSharp.indexOf("C4"))); }
+    get baseNote() { return parseInt(loadFromLocalStorage("baseNote", allNotesSharp.indexOf("G4"))); }
     get tunes() { return loadFromLocalStorage("tunes", Array(21).fill(0).join(',')).split(",").map(Number); }
     // get tunes() { return loadJSONFromLocalStorage("tunes", Array(21).fill(0)); } // При переходе на формат json не читаются старые настройки
     get keyboardScheme () { return loadFromLocalStorage("keyboardScheme", 0); }
