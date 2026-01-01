@@ -233,3 +233,340 @@ e.respondWith(
 
 - GitHub 仓库: https://github.com/piaomiaoguying/kalimba-online.git
 - 作者: Artem Samsonov
+
+---
+
+## Docker 部署指南
+
+### 概述
+
+本项目已配置为支持 Docker 部署，可以轻松部署到 NAS 或任何支持 Docker 的服务器上。项目已完全本地化，所有资源（包括第三方库和音色库）都已下载到本地，无需网络连接即可运行。
+
+### 部署文件
+
+项目包含以下 Docker 相关文件：
+
+- `Dockerfile` - Docker 镜像构建文件
+- `docker-compose.yml` - Docker Compose 配置文件
+- `nginx.conf` - Nginx 配置文件
+- `.dockerignore` - Docker 构建忽略文件
+- `DOCKER_DEPLOY.md` - 详细的部署文档
+
+### 本地化资源说明
+
+所有外部资源已下载到本地：
+
+**第三方库**（`lib/` 目录）：
+- jQuery 3.7.1 - `lib/jquery.min.js` (85 KB)
+- SoundFontPlayer 0.12.0 - `lib/soundfont-player.min.js` (22 KB)
+- Pico.css 1.5.13 - `lib/pico.min.css` (71 KB)
+
+**音色库**（`soundfonts/` 目录）：
+- FluidR3_GM - `soundfonts/FluidR3_GM/kalimba-mp3.js` (1.6 MB)
+- FatBoy - `soundfonts/FatBoy/kalimba-mp3.js` (1.6 MB)
+- Keylimba - `soundfonts/keylimba/kalimba.mp3.js` (已存在)
+
+### 快速部署
+
+#### 方法一：使用 Docker Compose（推荐）
+
+```bash
+# 进入项目目录
+cd /path/to/kalimba-online
+
+# 构建并启动
+docker-compose up -d --build
+```
+
+#### 方法二：使用 Docker 命令
+
+```bash
+# 构建镜像
+docker build -t kalimba-online:latest .
+
+# 运行容器
+docker run -d \
+  --name kalimba-online \
+  -p 9999:80 \
+  --restart unless-stopped \
+  kalimba-online:latest
+```
+
+### 访问应用
+
+部署成功后，在浏览器中访问：
+
+```
+http://服务器IP:9999
+```
+
+例如：`http://192.168.1.100:9999`
+
+### 常见问题和解决方案
+
+#### 问题 1: Docker Hub 连接超时
+
+**错误信息**：
+```
+ERROR: failed to solve: DeadlineExceeded: nginx:alpine: failed to resolve source metadata
+```
+
+**原因**：服务器无法访问 Docker Hub 或网络连接不稳定。
+
+**解决方案**：
+
+1. **配置 Docker 镜像加速器**（推荐）：
+
+```bash
+# 创建 Docker 配置目录
+sudo mkdir -p /etc/docker
+
+# 配置镜像加速器
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://docker.1panel.live",
+    "https://dockerhub.icu"
+  ]
+}
+EOF
+
+# 重启 Docker 服务
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+2. **修改 Dockerfile 使用国内镜像源**：
+
+已在 `Dockerfile` 中配置：
+```dockerfile
+FROM docker.m.daocloud.io/library/nginx:alpine
+```
+
+3. **手动拉取镜像并打标签**（备用方案）：
+
+如果上述方法仍然失败，可以手动拉取镜像：
+
+```bash
+# 先手动拉取镜像
+docker pull docker.m.daocloud.io/library/nginx:alpine
+
+# 给镜像打标签
+docker tag docker.m.daocloud.io/library/nginx:alpine nginx:alpine
+
+# 再构建
+cd /vol1/1000/nvme/kalimba-online && docker-compose build
+```
+
+#### 问题 2: docker-compose.yml 中的 volumes 配置错误
+
+**错误信息**：
+```
+ERROR: The Compose file './docker-compose.yml' is invalid because:
+services.kalimba-online.volumes contains an invalid type, it should be an array
+```
+
+**原因**：volumes 字段不能只包含注释。
+
+**解决方案**：将整个 volumes 块注释掉或删除（已修复）：
+
+```yaml
+# volumes:
+#   # 可选：如果需要持久化配置，可以挂载配置目录
+#   - ./config:/usr/share/nginx/html/config
+```
+
+#### 问题 3: 容器构建成功但无法启动
+
+**错误信息**：
+```
+Error response from daemon: No such container: kalimba-online
+```
+
+**原因**：只是构建了镜像，但没有创建容器。
+
+**解决方案**：使用 `docker-compose up -d` 创建并启动容器：
+
+```bash
+cd /path/to/kalimba-online && docker-compose up -d
+```
+
+### 部署检查清单
+
+在部署前，请确认以下事项：
+
+- [ ] 已上传所有项目文件到服务器
+- [ ] 已配置 Docker 镜像加速器（推荐）
+- [ ] 确认端口 9999 未被占用（或修改为其他端口）
+- [ ] 确认 `lib/` 目录包含所有第三方库文件
+- [ ] 确认 `soundfonts/` 目录包含所有音色库文件
+
+### 验证部署
+
+部署完成后，使用以下命令验证：
+
+```bash
+# 查看容器状态
+docker ps | grep kalimba-online
+
+# 查看日志
+docker logs kalimba-online
+
+# 检查端口监听
+netstat -tuln | grep 9999
+```
+
+### 常用管理命令
+
+```bash
+# 查看容器状态
+docker-compose ps
+
+# 查看日志
+docker-compose logs -f kalimba-online
+
+# 停止容器
+docker-compose stop
+
+# 启动容器
+docker-compose start
+
+# 重启容器
+docker-compose restart
+
+# 删除容器
+docker-compose down
+
+# 重新构建
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+### NAS 部署
+
+#### Synology NAS
+
+1. 安装 Docker 套件
+2. SSH 登录 NAS
+3. 上传项目文件到 `/volume1/docker/kalimba-online`
+4. 运行 `docker-compose up -d --build`
+5. 可选：配置反向代理
+
+#### QNAP NAS
+
+1. 安装 Container Station
+2. 使用 Container Station 或命令行部署
+3. 访问应用
+
+### 配置说明
+
+#### 修改端口
+
+编辑 `docker-compose.yml`：
+
+```yaml
+ports:
+  - "3000:80"  # 修改外部端口
+```
+
+#### 修改时区
+
+在 `docker-compose.yml` 中修改：
+
+```yaml
+environment:
+  - TZ=Asia/Shanghai  # 改为你所在的时区
+```
+
+### 性能优化
+
+Nginx 配置已包含以下优化：
+
+- Gzip 压缩
+- 静态资源缓存（1年）
+- 音色库文件缓存（1年）
+- HTML 文件不缓存（确保更新）
+- 安全头配置
+
+### 备份和恢复
+
+#### 备份
+
+```bash
+# 打包项目目录
+tar -czf kalimba-online-backup.tar.gz /path/to/kalimba-online
+
+# 备份到其他位置
+cp kalimba-online-backup.tar.gz /backup/
+```
+
+#### 恢复
+
+```bash
+# 解压备份
+tar -xzf kalimba-online-backup.tar.gz -C /path/to/
+
+# 重新部署
+cd /path/to/kalimba-online
+docker-compose up -d --build
+```
+
+### 安全建议
+
+1. **定期更新基础镜像**
+   ```bash
+   docker pull docker.m.daocloud.io/library/nginx:alpine
+   docker-compose build --no-cache
+   ```
+
+2. **配置防火墙规则**，限制访问端口
+
+3. **使用反向代理**（如 Nginx Proxy Manager）处理 HTTPS
+
+4. **定期备份**项目文件和配置
+
+### 故障排查
+
+#### 容器无法启动
+
+```bash
+# 查看错误日志
+docker-compose logs kalimba-online
+
+# 检查端口是否被占用
+netstat -tuln | grep 9999
+
+# 检查 Docker 服务状态
+sudo systemctl status docker
+```
+
+#### 页面无法访问
+
+- 检查防火墙设置
+- 确认容器正在运行：`docker ps`
+- 检查端口映射是否正确
+- 查看浏览器控制台错误信息
+
+#### 音色库无法加载
+
+- 确认 `soundfonts/` 目录已正确上传
+- 检查文件权限：`ls -la soundfonts/`
+- 查看浏览器控制台错误信息
+- 检查 Nginx 访问日志
+
+### 更新应用
+
+1. 上传新的项目文件
+2. 重新构建并启动
+
+```bash
+cd /path/to/kalimba-online
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+### 更多信息
+
+详细的部署说明、配置选项和高级用法请参考 `DOCKER_DEPLOY.md` 文件。
