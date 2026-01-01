@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# 文档
+README.md
+IFLOW.md
+LICENSE
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# 临时文件
+*.log
+.DS_Store
+Thumbs.db
+
+# 构建产物（如果有）
+node_modules
+dist
+build

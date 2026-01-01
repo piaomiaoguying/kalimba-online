@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  kalimba-online:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kalimba-online
+    ports:
+      - "9999:80"
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    # volumes:
+    #   # 可选：如果需要持久化配置，可以挂载配置目录
+    #   - ./config:/usr/share/nginx/html/config
+    labels:
+      - "com.kalimba.description=Kalimba Online - 在线卡林巴演奏应用"
+      - "com.kalimba.version=1.0"
