@@ -22,12 +22,39 @@ $(document).ready(function () {
         }, 6000);
     }
 
+    // 检测是否是PC端
+    function isPC() {
+        // 通过屏幕宽度和触摸能力判断
+        // 屏幕宽度大于1024px且没有触摸能力，或者屏幕宽度大于1280px认为是PC
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const screenWidth = window.innerWidth;
+
+        // 如果屏幕宽度大于1280px，认为是PC
+        if (screenWidth > 1280) {
+            return true;
+        }
+
+        // 如果屏幕宽度大于1024px且没有触摸能力，认为是PC
+        if (screenWidth > 1024 && !hasTouch) {
+            return true;
+        }
+
+        return false;
+    }
+
     // 点击全屏按钮的事件
     fullscreenButton.on("click", function () {
         if (document.fullscreenElement || $("#main-container").hasClass("fullscreen")) {
             exitFullscreen();
         } else {
-            // 检查屏幕方向
+            // 先检测是否是PC端
+            if (isPC()) {
+                // PC端直接进入全屏，不进行横屏判断
+                enterFullscreen();
+                return;
+            }
+
+            // 移动端才检查屏幕方向
             const isLandscape = window.innerWidth > window.innerHeight;
             if (isLandscape) {
                 // 横屏时阻止进入全屏，显示提示
@@ -167,6 +194,10 @@ $(document).ready(function () {
             $("#iosExitFullscreen").hide();
             $("#main-container").removeAttr("data-ios");
             // 刷新页面恢复原始状态
+            location.reload();
+        }
+        // PC端退出全屏时也刷新页面
+        else if (isPC()) {
             location.reload();
         }
     }
