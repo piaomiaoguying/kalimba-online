@@ -331,20 +331,57 @@ class Kalimba_Online {
                 break;
         }
 
+        // 自定义标签映射（从左到右）：5, 3, 1, 6̣, 5̣, 7̣, 2, 4, 6
+        // dotsPosition: "above"（上方点）, "below"（下方点）, ""（无点）
+        const customLabels = [
+            {num: 5, dots: "", dotsPosition: ""},           // 位置1: 5（无点）
+            {num: 3, dots: "", dotsPosition: ""},           // 位置2: 3（无点）
+            {num: 1, dots: "", dotsPosition: ""},           // 位置3: 1（无点）
+            {num: 6, dots: "·", dotsPosition: "below"},     // 位置4: 6̣（带点，低八度）
+            {num: 5, dots: "·", dotsPosition: "below"},     // 位置5: 5̣（带点，低八度）
+            {num: 7, dots: "·", dotsPosition: "below"},     // 位置6: 7̣（带点，低八度）
+            {num: 2, dots: "", dotsPosition: ""},           // 位置7: 2（无点）
+            {num: 4, dots: "", dotsPosition: ""},           // 位置8: 4（无点）
+            {num: 6, dots: "", dotsPosition: ""}            // 位置9: 6（无点）
+        ];
+
         // 遍历需要添加到字段的按键数组
-        sortedNotes.forEach((note) => {
+        sortedNotes.forEach((note, index) => {
             // 获取按键编号，其中 C4 - 0, D4 - 1 等
             let num = notesArray.indexOf(note);
-            // 将编号 8 9 10 ... 转换为 1 2 3 ...
-            let labelNum = num % 7 + 1;
 
-            // 确定需要在数字上方绘制多少个点
-            let dots = "";
-            for (let i = 0; i < Math.floor(num / 7); i++) dots += ".";
-            if (dots === "..") dots = ":";
+            // 使用自定义标签（如果是9键）
+            let label, dotsPosition = "";
+            if (parseInt(this.keysCount) === 9 && customLabels[index]) {
+                // 使用自定义标签
+                let customLabel = customLabels[index];
+                label = customLabel.num;
+                dotsPosition = customLabel.dotsPosition;
+                if (customLabel.dots) {
+                    if (customLabel.dotsPosition === "above") {
+                        label = customLabel.dots + "\n" + label;
+                    } else if (customLabel.dotsPosition === "below") {
+                        label = label + "\n" + customLabel.dots;
+                    }
+                }
+            } else {
+                // 使用默认标签生成逻辑
+                // 将编号 8 9 10 ... 转换为 1 2 3 ...
+                let labelNum = num % 7 + 1;
 
-            // 获取按键的最终标签
-            let label = dots + "\n" + labelNum;
+                // 确定需要在数字上方绘制多少个点
+                let dots = "";
+                for (let i = 0; i < Math.floor(num / 7); i++) dots += ".";
+                if (dots === "..") dots = ":";
+
+                // 获取按键的最终标签
+                if (dots) {
+                    label = dots + "\n" + labelNum;
+                    dotsPosition = "above";
+                } else {
+                    label = labelNum;
+                }
+            }
 
             let keys = notesArray.length;
             let x = notesArray.indexOf(note);
@@ -371,7 +408,7 @@ class Kalimba_Online {
                         $('<div>').addClass('note-text').append(
                             $('<span>').addClass('note-keyboard-key').text(keyboardKeys[keyboardKey])
                         ).append(
-                            $('<span>').addClass('note-number').text(label)
+                            $('<span>').addClass('note-number' + (dotsPosition === 'below' ? ' dots-below' : '')).attr('data-dots', dotsPosition === 'below' ? '·' : '').text(label)
                         ).append(
                             $('<span>').addClass('note-letter').text(letter.slice(0, -1)).append(
                                 $('<sub>').text(letter.slice(-1))

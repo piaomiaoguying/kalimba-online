@@ -112,6 +112,20 @@ html {
     color: var(--primary-inverse);
 }
 
+/* 下方点样式（用于低八度标记） */
+.note-number.dots-below {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.note-number.dots-below::after {
+    content: attr(data-dots);
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
 .key-click {
     animation: shake2 1s;
     transform: translate3d(0, 0, 0);
