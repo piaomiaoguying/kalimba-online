@@ -230,7 +230,7 @@ class Kalimba_Online {
     get keysCount() { return loadFromLocalStorage("keysCount", 9); }
     get labelType() { return loadFromLocalStorage("labelType", "Number"); }
     get kalimba () { return this._kalimba; }
-    get baseNote() { return parseInt(loadFromLocalStorage("baseNote", allNotesSharp.indexOf("G4"))); }
+    get baseNote() { return parseInt(loadFromLocalStorage("baseNote", allNotesSharp.indexOf("E4"))); }
     get tunes() { return loadFromLocalStorage("tunes", Array(21).fill(0).join(',')).split(",").map(Number); }
     // get tunes() { return loadJSONFromLocalStorage("tunes", Array(21).fill(0)); } // При переходе на формат json не читаются старые настройки
     get keyboardScheme () { return loadFromLocalStorage("keyboardScheme", 0); }
