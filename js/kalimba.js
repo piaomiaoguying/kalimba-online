@@ -235,7 +235,7 @@ class Kalimba_Online {
     // get tunes() { return loadJSONFromLocalStorage("tunes", Array(21).fill(0)); } // При переходе на формат json не читаются старые настройки
     get keyboardScheme () { return loadFromLocalStorage("keyboardScheme", 0); }
     get currentKeyboardScheme () { return keyboardSchemes[this.keyboardScheme]; }
-    get fullscreenLayout() { return loadFromLocalStorage("fullscreenLayout", "leftRight"); }
+    get fullscreenLayout() { return loadFromLocalStorage("fullscreenLayout", "left-right"); }
     get volume() { return loadFromLocalStorage("volume", 75); }
     get recordedNotes() { return loadJSONFromLocalStorage("recordedNotes", Array(0)); }
 

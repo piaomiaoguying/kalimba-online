@@ -53,3 +53,8 @@
   - [x] 禁止访问配置文件（Dockerfile、docker-compose.yml等）
   - [x] 禁止访问脚本文件（update.sh）
   - [x] 禁止访问.git目录和.gitignore文件
+- [x] 默认设置修复：
+  - [x] 修复全屏布局默认值（从"默认"改为"左右"）
+  - [x] 修复 JavaScript 默认值命名不一致问题（leftRight → left-right）
+  - [x] 确保进入全屏后正确应用左右布局
+  - [x] 确认所有默认值与JavaScript代码一致

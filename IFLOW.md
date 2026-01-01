@@ -863,6 +863,47 @@ docker-compose up -d
 
 ---
 
+### 2026-01-01 - 默认设置修复
+
+#### 全屏布局默认值修复
+
+**问题**：在新浏览器或隐私模式下首次访问时，全屏布局默认显示"默认"选项，而不是"左右"选项。即使将 HTML 中的 `checked` 属性从 `default-layout` 移到 `left-right-layout`，进入全屏后实际上并没有应用左右布局，只有在页面上切换一下选项后才会生效。
+
+**根本原因**：
+1. JavaScript 代码中 `get fullscreenLayout()` 的默认值是 `"leftRight"`（驼峰命名）
+2. HTML 中单选按钮的 `value` 属性是 `"left-right"`（连字符命名）
+3. JavaScript 试图找到 `value="leftRight"` 的单选按钮，但找不到匹配项
+4. 结果导致没有任何单选按钮被正确选中，且进入全屏时无法读取到正确的布局设置
+
+**解决方案**：
+1. 将 JavaScript 中的默认值从 `"leftRight"` 改为 `"left-right"`，与 HTML 保持一致
+2. 确保 HTML 中 `left-right-layout` 有 `checked` 属性
+3. 这样 JavaScript 就能正确找到对应的单选按钮并设置选中状态
+
+**修改文件**：
+- `index.html` - 将 `checked` 属性从 `default-layout` 移到 `left-right-layout`
+- `js/kalimba.js` - 修改 `get fullscreenLayout()` 的默认值从 `"leftRight"` 改为 `"left-right"`
+
+**技术细节**：
+- 修改前：`get fullscreenLayout() { return loadFromLocalStorage("fullscreenLayout", "leftRight"); }`
+- 修改后：`get fullscreenLayout() { return loadFromLocalStorage("fullscreenLayout", "left-right"); }`
+- 确保命名约定一致，避免因大小写和连字符差异导致的问题
+- 现在新用户首次访问时，会正确选中"左右"布局，并且进入全屏后能正确应用
+
+#### 默认值确认
+
+经过确认，所有选项的默认值如下：
+
+1. **音量**：75（✓ 正确）
+2. **基本音**：E4（✓ 正确）
+3. **全屏布局**：left-right（✓ 已修复）
+4. **标签类型**：Number（✓ 正确）
+5. **按键数量**：9（✓ 正确）
+6. **音色库**：Keylimba（✓ 正确）
+7. **键位排列**：Alternating（✓ 正确）
+
+---
+
 ## 附录
 
 ### 项目文件结构
