@@ -83,8 +83,20 @@ $(document).ready(function () {
             return;
         }
         
-        const vhQuarter = window.innerHeight / 4; // 1/4 屏幕高度的像素值
-        console.log("1/4 屏幕高度 =", vhQuarter, "px");
+        // 检测是否是手机横屏模式
+        const isMobileLandscape = window.innerWidth <= 768 && document.fullscreenElement;
+        
+        // 根据模式选择使用视口高度还是宽度
+        const viewportSize = isMobileLandscape ? window.innerWidth : window.innerHeight;
+        let vhQuarter = viewportSize / 4; // 1/4 屏幕尺寸的像素值
+        
+        // 手机横屏时，最终高度要乘以2
+        if (isMobileLandscape) {
+            vhQuarter = vhQuarter * 3.5;
+        }
+        
+        console.log("模式:", isMobileLandscape ? "手机横屏" : "普通全屏", "增加高度 =", vhQuarter, "px");
+        
         $(".key-zone").each(function() {
             const currentHeight = parseFloat($(this).css('height'));
             const newHeight = currentHeight + vhQuarter;

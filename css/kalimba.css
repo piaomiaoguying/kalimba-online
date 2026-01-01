@@ -468,6 +468,21 @@ input[type=range]::-webkit-slider-thumb {
         width: 100vh;
     }
     
+    /* 手机横屏时按键等比例放大 */
+    .fullscreen .key-zone {
+        width: 8vh !important;
+        max-width: 140px;
+        min-width: 70px;
+        padding: 0.5vh !important;
+    }
+    
+    /* 手机横屏时文字等比例放大 */
+    .fullscreen .note-text {
+        font-size: 3vh;
+        padding-bottom: 2vh;
+        margin-bottom: 4vh;
+    }
+    
     .fullscreen .buttons-container {
         position: fixed;
         top: 10px;
