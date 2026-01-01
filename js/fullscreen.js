@@ -15,6 +15,13 @@ $(document).ready(function () {
         if (document.fullscreenElement || $("#main-container").hasClass("fullscreen")) {
             exitFullscreen();
         } else {
+            // 检查屏幕方向
+            const isLandscape = window.innerWidth > window.innerHeight;
+            if (isLandscape) {
+                // 横屏时阻止进入全屏，显示提示
+                alert("请先将手机旋转至竖屏模式，并在系统设置中锁定屏幕方向（关闭自动旋转），然后再进入全屏演奏。这样可以防止演奏过程中屏幕自动旋转导致布局混乱。");
+                return;
+            }
             enterFullscreen();
         }
     });
