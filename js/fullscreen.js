@@ -1,20 +1,27 @@
 $(document).ready(function () {
     // 全屏切换按钮
     const fullscreenButton = $("#fullscreenButton");
+    // iOS退出全屏按钮
+    const iosExitButton = $("#iosExitFullscreen");
     // 需要设置为全屏的块
     const mainContainer = $("#main-container")[0];
-    
+
     // 保存原始按键高度
     let originalHeights = [];
     let originalTransforms = [];
 
     // 点击全屏按钮的事件
     fullscreenButton.on("click", function () {
-        if (document.fullscreenElement) {
+        if (document.fullscreenElement || $("#main-container").hasClass("fullscreen")) {
             exitFullscreen();
         } else {
             enterFullscreen();
         }
+    });
+
+    // iOS退出全屏按钮点击事件
+    iosExitButton.on("click", function () {
+        exitFullscreen();
     });
 
     // 全屏状态更改时调用的事件
@@ -23,11 +30,16 @@ $(document).ready(function () {
             // 进入全屏：立即尝试增加按键高度
             increaseKeyHeights();
         } else {
-            // 退出全屏：恢复原始高度
-            restoreKeyHeights();
-            $("#fullscreen-on").show();
-            $("#fullscreen-off").hide();
-            $("#main-container").removeClass("fullscreen");
+            // 退出全屏：Android也刷新页面恢复原始状态
+            if (isAndroid()) {
+                location.reload();
+            } else {
+                // iOS或其他设备：恢复原始高度
+                restoreKeyHeights();
+                $("#fullscreen-on").show();
+                $("#fullscreen-off").hide();
+                $("#main-container").removeClass("fullscreen");
+            }
         }
     });
 
@@ -67,6 +79,8 @@ $(document).ready(function () {
         // 为iOS设备添加data-ios属性，让CSS区分iOS和Android
         if (isIOS()) {
             $("#main-container").attr("data-ios", "true");
+            // 显示iOS退出全屏按钮
+            $("#iosExitFullscreen").show();
         } else {
             $("#main-container").removeAttr("data-ios");
         }
@@ -96,6 +110,14 @@ $(document).ready(function () {
         $("#fullscreen-on").show();
         $("#fullscreen-off").hide();
         $("#main-container").removeClass("fullscreen");
+
+        // iOS退出全屏时刷新页面，恢复原始状态
+        if (isIOS()) {
+            $("#iosExitFullscreen").hide();
+            $("#main-container").removeAttr("data-ios");
+            // 刷新页面恢复原始状态
+            location.reload();
+        }
     }
     
     // 保存原始按键高度
@@ -218,10 +240,17 @@ $(document).ready(function () {
     function restoreKeyHeights() {
         $(".key-zone").each(function(index) {
             if (originalHeights[index]) {
-                $(this).css('height', originalHeights[index]);
+                // 恢复原始高度
+                $(this).css('height', originalHeights[index] + 'px');
+                // 清除内联的height样式（如果有!important）
+                this.style.removeProperty('height');
             }
             if (originalTransforms[index]) {
+                // 恢复原始transform
                 $(this).css('transform', originalTransforms[index]);
+            } else {
+                // 如果没有原始transform，清除transform
+                $(this).css('transform', 'none');
             }
         });
         originalHeights = [];
