@@ -70,6 +70,11 @@ html {
         width: 50px;
         padding: 2px;
     }
+
+    /* 手机端非全屏模式下减小英文字母标签字号 */
+    .note-letter {
+        font-size: 0.75em;
+    }
 }
 
 /* 用于 PC */
