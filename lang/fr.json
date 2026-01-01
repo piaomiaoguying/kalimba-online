@@ -25,5 +25,6 @@
     "footer.sourcecode": "Code source",
     "footer.hostedby": "Hébergé par",
     "theme.darkmode.on": "Activer le mode sombre",
-    "theme.darkmode.off": "Désactiver le mode sombre"
+    "theme.darkmode.off": "Désactiver le mode sombre",
+    "toast.landscapeWarning": "Pour une meilleure expérience de jeu, tournez l'appareil en mode portrait et verrouillez l'orientation de l'écran avant d'activer le mode plein écran."
 }

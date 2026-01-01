@@ -25,5 +25,6 @@
     "footer.sourcecode": "Source code",
     "footer.hostedby": "Hosted by",
     "theme.darkmode.on": "Turn on dark mode",
-    "theme.darkmode.off": "Turn off dark mode"
+    "theme.darkmode.off": "Turn off dark mode",
+    "toast.landscapeWarning": "For a better playing experience, please rotate to portrait mode and lock screen orientation, then enter fullscreen."
 }

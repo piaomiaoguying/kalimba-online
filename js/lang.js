@@ -44,11 +44,16 @@ function getUserLang() {
 var defaultLocalization;
 $.getJSON('/lang/en.json', function(data) {
     defaultLocalization = data;
+    // 将默认语言也暴露到全局变量
+    window.defaultLocalization = data;
 });
 
 // 将整个页面翻译为指定语言
 function loadLanguage(lang) {
     $.getJSON('/lang/' + lang + '.json', function(data) {
+        // 将当前语言翻译暴露到全局变量
+        window.currentTranslations = data;
+
         $('html').attr('lang', lang);
         $('[data-i18n]').each(function() {
             var key = $(this).data('i18n');

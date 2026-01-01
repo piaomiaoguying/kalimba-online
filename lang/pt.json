@@ -25,5 +25,6 @@
     "footer.sourcecode": "Código fonte",
     "footer.hostedby": "Hospedado por",
     "theme.darkmode.on": "Ativar modo escuro",
-    "theme.darkmode.off": "Desativar modo escuro"
+    "theme.darkmode.off": "Desativar modo escuro",
+    "toast.landscapeWarning": "Para uma melhor experiência de jogo, gire o dispositivo para o modo retrato e bloqueie a orientação da tela antes de ativar o modo de tela cheia."
 }

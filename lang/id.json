@@ -25,5 +25,6 @@
     "footer.sourcecode": "Kod Sumber",
     "footer.hostedby": "Dihoskan oleh",
     "theme.darkmode.on": "Hidupkan mod gelap",
-    "theme.darkmode.off": "Matikan mod gelap"
+    "theme.darkmode.off": "Matikan mod gelap",
+    "toast.landscapeWarning": "Untuk pengalaman bermain yang lebih baik, putar perangkat ke mode potret dan kunci orientasi layar sebelum mengaktifkan mode layar penuh."
 }

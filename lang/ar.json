@@ -25,5 +25,6 @@
     "footer.sourcecode": "شفرة المصدر",
     "footer.hostedby": "استضاف من قبل",
     "theme.darkmode.on": "تشغيل وضع الظلام",
-    "theme.darkmode.off": "إيقاف وضع الظلام"
+    "theme.darkmode.off": "إيقاف وضع الظلام",
+    "toast.landscapeWarning": "للحصول على تجربة لعب أفضل، يرجى تدوير الجهاز إلى الوضع العمودي وقفل اتجاه الشاشة قبل تفعيل وضع ملء الشاشة."
 }

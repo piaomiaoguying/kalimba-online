@@ -25,5 +25,6 @@
     "footer.sourcecode": "ソースコード",
     "footer.hostedby": "ホスト",
     "theme.darkmode.on": "ダークモードをオンにする",
-    "theme.darkmode.off": "ダークモードをオフにする"
+    "theme.darkmode.off": "ダークモードをオフにする",
+    "toast.landscapeWarning": "より良い演奏体験のために、全画面モードを有効にする前に、デバイスを縦向きモードに回転し、画面の向きをロックしてください。"
 }

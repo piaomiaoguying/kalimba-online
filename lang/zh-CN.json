@@ -25,5 +25,6 @@
     "footer.sourcecode": "源代码",
     "footer.hostedby": "主办",
     "theme.darkmode.on": "启用深色模式",
-    "theme.darkmode.off": "关闭深色模式"
+    "theme.darkmode.off": "关闭深色模式",
+    "toast.landscapeWarning": "为了更好的演奏体验，请先旋转至竖屏并锁定屏幕方向，再进入全屏。"
 }

@@ -11,8 +11,10 @@ $(document).ready(function () {
     let originalTransforms = [];
 
     // 显示Toast提示框
-    function showToast(message) {
+    function showToast(messageKey) {
         const toast = $("#toast");
+        // 从全局变量获取翻译
+        const message = (window.currentTranslations && window.currentTranslations[messageKey]) || (window.defaultLocalization && window.defaultLocalization[messageKey]) || messageKey;
         toast.text(message);
         toast.addClass("show");
 
@@ -58,7 +60,7 @@ $(document).ready(function () {
             const isLandscape = window.innerWidth > window.innerHeight;
             if (isLandscape) {
                 // 横屏时阻止进入全屏，显示提示
-                showToast("为了更好的演奏体验，请先旋转至竖屏并锁定屏幕方向，再进入全屏。");
+                showToast("toast.landscapeWarning");
                 return;
             }
             enterFullscreen();
