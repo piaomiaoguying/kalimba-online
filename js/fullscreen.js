@@ -83,11 +83,11 @@ $(document).ready(function () {
             return;
         }
         
-        const vh50 = window.innerHeight * 0.5; // 50vh 的像素值
-        console.log("50vh =", vh50, "px");
+        const vhQuarter = window.innerHeight / 4; // 1/4 屏幕高度的像素值
+        console.log("1/4 屏幕高度 =", vhQuarter, "px");
         $(".key-zone").each(function() {
             const currentHeight = parseFloat($(this).css('height'));
-            const newHeight = currentHeight + vh50;
+            const newHeight = currentHeight + vhQuarter;
             console.log("当前高度:", currentHeight, "新高度:", newHeight);
             $(this).css('height', newHeight + 'px');
             // 使用 !important 确保生效
