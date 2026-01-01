@@ -31,36 +31,68 @@ $(document).ready(function () {
         }
     });
 
+    // 检测是否是iOS设备
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    // 检测是否是Android设备
+    function isAndroid() {
+        return /Android/.test(navigator.userAgent);
+    }
+
     // 进入全屏的函数
     function enterFullscreen() {
         // 保存原始高度
         saveOriginalHeights();
-        
-        if (mainContainer.requestFullscreen) {
-            mainContainer.requestFullscreen();
-        } else if (mainContainer.mozRequestFullScreen) {
-            mainContainer.mozRequestFullScreen();
-        } else if (mainContainer.webkitRequestFullscreen) {
-            mainContainer.webkitRequestFullscreen();
-        } else if (mainContainer.msRequestFullscreen) {
-            mainContainer.msRequestFullscreen();
+
+        // iOS不支持requestFullscreen，使用CSS模拟全屏
+        // Android使用原有的requestFullscreen逻辑
+        if (!isIOS()) {
+            if (mainContainer.requestFullscreen) {
+                mainContainer.requestFullscreen();
+            } else if (mainContainer.mozRequestFullScreen) {
+                mainContainer.mozRequestFullScreen();
+            } else if (mainContainer.webkitRequestFullscreen) {
+                mainContainer.webkitRequestFullscreen();
+            } else if (mainContainer.msRequestFullscreen) {
+                mainContainer.msRequestFullscreen();
+            }
         }
+
         $("#fullscreen-on").hide();
         $("#fullscreen-off").show();
         $("#main-container").addClass("fullscreen");
+
+        // 为iOS设备添加data-ios属性，让CSS区分iOS和Android
+        if (isIOS()) {
+            $("#main-container").attr("data-ios", "true");
+        } else {
+            $("#main-container").removeAttr("data-ios");
+        }
+
+        // iOS需要手动触发按键高度调整
+        if (isIOS()) {
+            setTimeout(increaseKeyHeights, 100);
+        }
     }
 
     // 退出全屏的函数
     function exitFullscreen() {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
+        // iOS不支持exitFullscreen，直接移除全屏样式
+        // Android使用原有的exitFullscreen逻辑
+        if (!isIOS()) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
         }
+
         $("#fullscreen-on").show();
         $("#fullscreen-off").hide();
         $("#main-container").removeClass("fullscreen");
@@ -71,11 +103,11 @@ $(document).ready(function () {
         originalHeights = [];
         originalTransforms = [];
         $(".key-zone").each(function() {
-            originalHeights.push($(this).css('height'));
+            originalHeights.push(parseFloat($(this).css('height')));
             originalTransforms.push($(this).css('transform'));
         });
     }
-    
+
     // 增加按键高度
     function increaseKeyHeights() {
         console.log("increaseKeyHeights 被调用");
@@ -85,34 +117,70 @@ $(document).ready(function () {
             setTimeout(increaseKeyHeights, 200);
             return;
         }
-        
-        // 检测是否是手机横屏模式
-        const isMobileLandscape = window.innerWidth <= 768 && document.fullscreenElement;
-        
-        // 根据模式选择使用视口高度还是宽度
-        const viewportSize = isMobileLandscape ? window.innerWidth : window.innerHeight;
-        let vhQuarter = viewportSize / 4; // 1/4 屏幕尺寸的像素值
-        
-        // 手机横屏时，最终高度要乘以2
-        if (isMobileLandscape) {
-            vhQuarter = vhQuarter * 3.5;
+
+        // iOS设备使用新的按键高度逻辑（按比例缩放）
+        if (isIOS()) {
+            // 检测是否是手机横屏模式
+            const isMobileLandscape = window.innerWidth <= 1024 && $("#main-container").hasClass("fullscreen");
+
+            // 根据模式选择使用视口高度还是宽度
+            const viewportSize = isMobileLandscape ? window.innerWidth : window.innerHeight;
+
+            // 计算缩放比例 - iOS微调后的缩放比例
+            let scaleFactor = 1.45; // 默认放大1.45倍（再增加一点点高度）
+
+            // 手机横屏时，放大倍数稍微增加
+            if (isMobileLandscape) {
+                scaleFactor = 2.3; // 横屏放大2.3倍（再增加一点点高度）
+            }
+
+            console.log("iOS模式:", isMobileLandscape ? "手机横屏" : "普通全屏", "缩放比例 =", scaleFactor);
+
+            $(".key-zone").each(function(index) {
+                const originalHeight = originalHeights[index];
+                const newHeight = originalHeight * scaleFactor;
+                console.log("原始高度:", originalHeight, "新高度:", newHeight);
+                $(this).css('height', newHeight + 'px');
+                // 使用 !important 确保生效
+                this.style.setProperty('height', newHeight + 'px', 'important');
+                console.log("设置后高度:", $(this).css('height'));
+            });
+
+            // 手机横屏时调整按键位置
+            if (isMobileLandscape) {
+                adjustKeyPositionsForMobile();
+            }
         }
-        
-        console.log("模式:", isMobileLandscape ? "手机横屏" : "普通全屏", "增加高度 =", vhQuarter, "px");
-        
-        $(".key-zone").each(function() {
-            const currentHeight = parseFloat($(this).css('height'));
-            const newHeight = currentHeight + vhQuarter;
-            console.log("当前高度:", currentHeight, "新高度:", newHeight);
-            $(this).css('height', newHeight + 'px');
-            // 使用 !important 确保生效
-            this.style.setProperty('height', newHeight + 'px', 'important');
-            console.log("设置后高度:", $(this).css('height'));
-        });
-        
-        // 手机横屏时调整按键位置
-        if (isMobileLandscape) {
-            adjustKeyPositionsForMobile();
+        // Android/桌面使用原有的按键高度逻辑（增加固定像素值）
+        else {
+            // 检测是否是手机横屏模式
+            const isMobileLandscape = window.innerWidth <= 768 && document.fullscreenElement;
+
+            // 根据模式选择使用视口高度还是宽度
+            const viewportSize = isMobileLandscape ? window.innerWidth : window.innerHeight;
+            let vhQuarter = viewportSize / 4; // 1/4 屏幕尺寸的像素值
+
+            // 手机横屏时，最终高度要乘以2
+            if (isMobileLandscape) {
+                vhQuarter = vhQuarter * 3.5;
+            }
+
+            console.log("Android模式:", isMobileLandscape ? "手机横屏" : "普通全屏", "增加高度 =", vhQuarter, "px");
+
+            $(".key-zone").each(function() {
+                const currentHeight = parseFloat($(this).css('height'));
+                const newHeight = currentHeight + vhQuarter;
+                console.log("当前高度:", currentHeight, "新高度:", newHeight);
+                $(this).css('height', newHeight + 'px');
+                // 使用 !important 确保生效
+                this.style.setProperty('height', newHeight + 'px', 'important');
+                console.log("设置后高度:", $(this).css('height'));
+            });
+
+            // 手机横屏时调整按键位置
+            if (isMobileLandscape) {
+                adjustKeyPositionsForMobile();
+            }
         }
     }
     
@@ -124,16 +192,16 @@ $(document).ready(function () {
             console.log("当前布局设置:", layout, "不调整按键位置");
             return;
         }
-        
+
         const keys = $(".key-zone");
         const totalKeys = keys.length;
         const viewportWidth = window.innerWidth;
-        
-        // 计算移动距离：使用视口宽度的20%
-        const moveDistance = viewportWidth * 0.2;
-        
-        console.log("调整按键位置，总键数:", totalKeys, "移动距离:", moveDistance, "px");
-        
+
+        // 计算移动距离：iOS使用10%，Android使用20%
+        const moveDistance = isIOS() ? viewportWidth * 0.10 : viewportWidth * 0.2;
+
+        console.log("调整按键位置，设备:", isIOS() ? "iOS" : "Android", "总键数:", totalKeys, "移动距离:", moveDistance, "px");
+
         keys.each(function(index) {
             // 前4个键往左移（使用 transform，不影响布局）
             if (index < 4) {

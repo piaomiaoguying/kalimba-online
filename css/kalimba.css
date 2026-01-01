@@ -368,7 +368,7 @@ input[type=range]::-webkit-slider-thumb {
     flex-wrap: wrap;
 }
 
-/* "全屏"模式的样式 */
+/* "全屏"模式的样式 - 默认（Android/桌面） */
 .fullscreen {
     position: relative;
     display: flex;
@@ -380,6 +380,27 @@ input[type=range]::-webkit-slider-thumb {
     margin-bottom: var(--spacing);
     padding: 0;
     overflow: hidden;
+}
+
+/* iOS专用的全屏样式 */
+.fullscreen[data-ios="true"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    height: 100vh;
+    height: 100dvh; /* 使用动态视口高度，避免iOS底部栏遮挡 */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--background-color);
+}
+
+/* iOS全屏模式下隐藏header */
+.fullscreen[data-ios="true"] ~ header {
+    display: none !important;
 }
 
 /* 全屏模式下卡林巴容器 */
@@ -397,13 +418,23 @@ input[type=range]::-webkit-slider-thumb {
     max-width: 100vw;
 }
 
-/* 全屏模式下按键区域 - 增加宽度 */
+/* iOS专用的卡林巴容器样式 */
+.fullscreen[data-ios="true"] .kalimba-container {
+    transform: none; /* iOS不使用scale，让JavaScript控制高度 */
+}
+
+/* 全屏模式下按键区域 - Android/桌面保持原有样式 */
 .fullscreen .key-zone {
     width: 6vw !important;
     max-width: 90px;
     min-width: 50px;
     padding: 0.5vw !important;
-    /* 不设置固定高度，让 JavaScript 计算的比例生效 */
+}
+
+/* iOS专用的按键区域样式 - 保持原始长度比例 */
+.fullscreen[data-ios="true"] .key-zone {
+    /* 移除固定宽度设置，保持原始比例 */
+    padding: 0.5vw !important;
 }
 
 /* 全屏模式下文字大小自适应 */
@@ -440,16 +471,15 @@ input[type=range]::-webkit-slider-thumb {
     max-height: 80px;
 }
 
-/* 手机横屏样式 */
+/* 手机横屏样式 - Android/桌面原有样式 */
 @media (max-width: 768px) and (orientation: landscape) {
     .fullscreen .kalimba-container {
-        /* 旋转90度，变成横屏布局 */
         transform: rotate(90deg);
         transform-origin: center center;
         height: 100vw;
         width: 100vh;
     }
-    
+
     .fullscreen .buttons-container {
         position: fixed;
         top: 10px;
@@ -458,33 +488,80 @@ input[type=range]::-webkit-slider-thumb {
     }
 }
 
-/* 手机竖屏全屏时也强制横屏布局 */
+/* 手机竖屏全屏时也强制横屏布局 - Android/桌面原有样式 */
 @media (max-width: 768px) {
     .fullscreen .kalimba-container {
-        /* 旋转90度，变成横屏布局 */
         transform: rotate(90deg);
         transform-origin: center center;
         height: 100vw;
         width: 100vh;
     }
-    
-    /* 手机横屏时按键等比例放大 */
+
     .fullscreen .key-zone {
         width: 8vh !important;
         max-width: 140px;
         min-width: 70px;
         padding: 0.5vh !important;
     }
-    
-    /* 手机横屏时文字等比例放大 */
+
     .fullscreen .note-text {
         font-size: 3vh;
         padding-bottom: 2vh;
         margin-bottom: 4vh;
     }
-    
-    /* 手机端隐藏按钮容器 */
+
     .fullscreen .buttons-container {
+        display: none !important;
+    }
+}
+
+/* iOS专用的手机横屏样式 */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .fullscreen[data-ios="true"] {
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .fullscreen[data-ios="true"] .kalimba-container {
+        transform: rotate(90deg);
+        transform-origin: center center;
+        height: 100vw;
+        width: 100dvh;
+    }
+
+    .fullscreen[data-ios="true"] .buttons-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 10000;
+    }
+}
+
+/* iOS专用的手机竖屏全屏样式 */
+@media (max-width: 1024px) {
+    .fullscreen[data-ios="true"] {
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .fullscreen[data-ios="true"] .kalimba-container {
+        transform: rotate(90deg);
+        transform-origin: center center;
+        height: 100vw;
+        width: 100dvh;
+    }
+
+    .fullscreen[data-ios="true"] .key-zone {
+        padding: 0.5vh !important;
+    }
+
+    .fullscreen[data-ios="true"] .note-text {
+        font-size: 3vh;
+        padding-bottom: 2vh;
+        margin-bottom: 4vh;
+    }
+
+    .fullscreen[data-ios="true"] .buttons-container {
         display: none !important;
     }
 }

@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Kalimba Online",
-  "short_name": "Kalimba",
-  "description": "Play a customizable kalimba online with Kalimba Online. Customize colors, key layouts, sound types, volume, and more to create your unique instrument. Choose octaves, tune individual keys, and enjoy playing right in your browser. Easily control with your keyboard for maximum convenience.",
+  "name": "手机拇指琴",
+  "short_name": "拇指琴",
+  "description": "您可以在手机端浏览器中轻松演奏卡林巴拇指琴",
   "icons": [
     {
       "src": "img/152.png",
@@ -78,6 +78,7 @@
   ],
   "start_url": "/",
   "display": "standalone",
+  "orientation": "landscape",
   "background_color": "#11191f",
   "theme_color": "#11191f"
 }
