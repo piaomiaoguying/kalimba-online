@@ -6,6 +6,7 @@ $(document).ready(function () {
     
     // 保存原始按键高度
     let originalHeights = [];
+    let originalTransforms = [];
 
     // 点击全屏按钮的事件
     fullscreenButton.on("click", function () {
@@ -68,8 +69,10 @@ $(document).ready(function () {
     // 保存原始按键高度
     function saveOriginalHeights() {
         originalHeights = [];
+        originalTransforms = [];
         $(".key-zone").each(function() {
             originalHeights.push($(this).css('height'));
+            originalTransforms.push($(this).css('transform'));
         });
     }
     
@@ -106,6 +109,34 @@ $(document).ready(function () {
             this.style.setProperty('height', newHeight + 'px', 'important');
             console.log("设置后高度:", $(this).css('height'));
         });
+        
+        // 手机横屏时调整按键位置
+        if (isMobileLandscape) {
+            adjustKeyPositionsForMobile();
+        }
+    }
+    
+    // 手机横屏时调整按键位置：左边4个键往左移，右边5个键往右移
+    function adjustKeyPositionsForMobile() {
+        const keys = $(".key-zone");
+        const totalKeys = keys.length;
+        const viewportWidth = window.innerWidth;
+        
+        // 计算移动距离：使用视口宽度的20%
+        const moveDistance = viewportWidth * 0.2;
+        
+        console.log("调整按键位置，总键数:", totalKeys, "移动距离:", moveDistance, "px");
+        
+        keys.each(function(index) {
+            // 前4个键往左移（使用 transform，不影响布局）
+            if (index < 4) {
+                $(this).css('transform', `translateX(${-moveDistance}px)`);
+            }
+            // 后5个键往右移
+            else {
+                $(this).css('transform', `translateX(${moveDistance}px)`);
+            }
+        });
     }
     
     // 恢复原始按键高度
@@ -114,7 +145,11 @@ $(document).ready(function () {
             if (originalHeights[index]) {
                 $(this).css('height', originalHeights[index]);
             }
+            if (originalTransforms[index]) {
+                $(this).css('transform', originalTransforms[index]);
+            }
         });
         originalHeights = [];
+        originalTransforms = [];
     }
 });
