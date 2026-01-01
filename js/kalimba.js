@@ -360,9 +360,8 @@ class Kalimba_Online {
                 if (customLabel.dots) {
                     if (customLabel.dotsPosition === "above") {
                         label = customLabel.dots + "\n" + label;
-                    } else if (customLabel.dotsPosition === "below") {
-                        label = label + "\n" + customLabel.dots;
                     }
+                    // 下方点不添加到label字符串中，通过CSS的::after显示
                 }
             } else {
                 // 使用默认标签生成逻辑
@@ -406,7 +405,7 @@ class Kalimba_Online {
                 .append(
                     $('<div>').addClass('key').append(
                         $('<div>').addClass('note-text').append(
-                            $('<span>').addClass('note-keyboard-key').text(keyboardKeys[keyboardKey])
+                            // $('<span>').addClass('note-keyboard-key').text(keyboardKeys[keyboardKey])
                         ).append(
                             $('<span>').addClass('note-number' + (dotsPosition === 'below' ? ' dots-below' : '')).attr('data-dots', dotsPosition === 'below' ? '·' : '').text(label)
                         ).append(
