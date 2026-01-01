@@ -10,6 +10,18 @@ $(document).ready(function () {
     let originalHeights = [];
     let originalTransforms = [];
 
+    // 显示Toast提示框
+    function showToast(message) {
+        const toast = $("#toast");
+        toast.text(message);
+        toast.addClass("show");
+
+        // 6秒后自动隐藏
+        setTimeout(function() {
+            toast.removeClass("show");
+        }, 6000);
+    }
+
     // 点击全屏按钮的事件
     fullscreenButton.on("click", function () {
         if (document.fullscreenElement || $("#main-container").hasClass("fullscreen")) {
@@ -19,7 +31,7 @@ $(document).ready(function () {
             const isLandscape = window.innerWidth > window.innerHeight;
             if (isLandscape) {
                 // 横屏时阻止进入全屏，显示提示
-                alert("请先将手机旋转至竖屏模式，并在系统设置中锁定屏幕方向（关闭自动旋转），然后再进入全屏演奏。这样可以防止演奏过程中屏幕自动旋转导致布局混乱。");
+                showToast("为了更好的演奏体验，请先旋转至竖屏并锁定屏幕方向，再进入全屏。");
                 return;
             }
             enterFullscreen();
