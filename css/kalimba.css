@@ -571,6 +571,33 @@ input[type=range]::-webkit-slider-thumb {
     }
 }
 
+/* iOS微信浏览器专用样式 - 整体缩小布局 */
+.fullscreen[data-ios="true"][data-ios-wechat="true"] .kalimba-container {
+    /* 在旋转的基础上，额外缩小到原来的90%，避免左右按键被裁剪 */
+    transform: rotate(90deg) scale(0.90);
+    transform-origin: center center;
+}
+
+/* iOS微信浏览器横屏全屏样式 */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .fullscreen[data-ios="true"][data-ios-wechat="true"] .kalimba-container {
+        transform: rotate(90deg) scale(0.95);
+        transform-origin: center center;
+        height: 100vw;
+        width: 100dvh;
+    }
+}
+
+/* iOS微信浏览器竖屏全屏样式 */
+@media (max-width: 1024px) {
+    .fullscreen[data-ios="true"][data-ios-wechat="true"] .kalimba-container {
+        transform: rotate(90deg) scale(0.90);
+        transform-origin: center center;
+        height: 100vw;
+        width: 100dvh;
+    }
+}
+
 /* iOS退出全屏按钮样式 */
 .ios-exit-button {
     position: fixed;

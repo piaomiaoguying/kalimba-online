@@ -133,6 +133,11 @@ $(document).ready(function () {
         return /Android/.test(navigator.userAgent);
     }
 
+    // 检测是否是iOS微信浏览器
+    function isIOSWeChat() {
+        return isIOS() && /MicroMessenger/i.test(navigator.userAgent);
+    }
+
     // 进入全屏的函数
     function enterFullscreen() {
         // 保存原始高度
@@ -161,8 +166,14 @@ $(document).ready(function () {
             $("#main-container").attr("data-ios", "true");
             // 显示iOS退出全屏按钮
             $("#iosExitFullscreen").show();
+
+            // 如果是微信浏览器，添加微信标记
+            if (isIOSWeChat()) {
+                $("#main-container").attr("data-ios-wechat", "true");
+            }
         } else {
             $("#main-container").removeAttr("data-ios");
+            $("#main-container").removeAttr("data-ios-wechat");
         }
 
         // iOS需要手动触发按键高度调整
@@ -195,6 +206,7 @@ $(document).ready(function () {
         if (isIOS()) {
             $("#iosExitFullscreen").hide();
             $("#main-container").removeAttr("data-ios");
+            $("#main-container").removeAttr("data-ios-wechat");
             // 刷新页面恢复原始状态
             location.reload();
         }
